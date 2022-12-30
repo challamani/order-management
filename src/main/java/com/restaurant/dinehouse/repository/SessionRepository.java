@@ -1,9 +1,9 @@
 package com.restaurant.dinehouse.repository;
 
-import com.restaurant.dinehouse.model.AgentSession;
+import com.restaurant.dinehouse.model.UserSession;
 import org.springframework.data.repository.CrudRepository;
 
-public interface SessionRepository extends CrudRepository<AgentSession, Long> {
+public interface SessionRepository extends CrudRepository<UserSession, Long> {
     @Override
-    Iterable<AgentSession> findAll();
+    Iterable<UserSession> findAll();
 }

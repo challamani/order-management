@@ -1,12 +1,13 @@
 package com.restaurant.dinehouse.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 
 @Entity
-@Table(name = "agent")
-public class Agent implements Serializable {
+@Table(name = "app_user")
+public class User implements Serializable {
 
     private static final long serialVersionUID = -1604333737340047541L;
 
@@ -15,18 +16,30 @@ public class Agent implements Serializable {
     private Long id;
 
     @Column(name = "firstName")
+    @NotNull
     private String firstName;
 
     @Column(name = "lastName")
+    @NotNull
     private String lastName;
 
-    public Agent() {
+    @Column(name = "isAdmin")
+    @NotNull
+    private boolean isAdmin;
+
+    @Column(name = "pwd")
+    @NotNull
+    private String pwd;
+
+    public User() {
     }
 
-    @Column(name = "agentId")
-    private String agentId;
+    @Column(name = "userId")
+    @NotNull
+    private String userId;
 
     @Column(name = "phoneNo")
+    @NotNull
     private String phoneNo;
 
     @Column(name = "status")
@@ -63,14 +76,6 @@ public class Agent implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(String agentId) {
-        this.agentId = agentId;
     }
 
     public String getPhoneNo() {
@@ -119,12 +124,36 @@ public class Agent implements Serializable {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName=" + lastName +
-                ", agentId='" + agentId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 ", status='" + status + '\'' +
                 ", email='" + email + '\'' +
                 ", dob='" + dob + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

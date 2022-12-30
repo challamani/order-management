@@ -1,18 +1,19 @@
 package com.restaurant.dinehouse.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "agent_session")
-public class AgentSession {
+@Table(name = "user_session")
+public class UserSession {
     private static final long serialVersionUID = -1604333737340047500L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "agentId")
-    private String agentId;
+    @Column(name = "userId")
+    private String userId;
 
     @Column(name = "token")
     private String token;
@@ -20,10 +21,14 @@ public class AgentSession {
     @Column(name = "liftTime")
     private Integer liftTime;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "createdOn")
+    private Date createdOn;
 
-    public AgentSession() {
+    @Column(name = "expireOn")
+    private Date expireOn;
+
+
+    public UserSession() {
     }
 
     public Long getId() {
@@ -32,14 +37,6 @@ public class AgentSession {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getAgentId() {
-        return agentId;
-    }
-
-    public void setAgentId(String agentId) {
-        this.agentId = agentId;
     }
 
     public String getToken() {
@@ -58,12 +55,28 @@ public class AgentSession {
         this.liftTime = liftTime;
     }
 
-    public String getStatus() {
-        return status;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getExpireOn() {
+        return expireOn;
+    }
+
+    public void setExpireOn(Date expireOn) {
+        this.expireOn = expireOn;
     }
 }
 
