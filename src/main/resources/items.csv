@@ -1,0 +1,192 @@
+1,1,Sweet Corn Soup,100
+1,1,Hot & Sour Soup,100
+1,1,Manchow Soup,100
+1,0,Chicken Sweet Corn Soup,120
+1,0,Chicken Hot &Sour Soup,120
+1,0,Chicken Manchow Soup,120
+1,1,Veg Manchurian,200
+1,1,Crispy Corn,180
+1,1,Green Peas Roast,170
+1,1,Chilli Paneer,250
+1,1,Paneer 65,250
+1,1,Chilli Mushroom,250
+1,1,Mushroom 65,250
+1,1,French Fries,180
+1,1,Gobi 65,180
+1,1,Gobi Manchurian,180
+1,1,Chilly Baby Corn,220
+1,1,Baby Corn 65,220
+1,1,Cashew Mushroom Dry,250
+1,1,Cashew Paneer Dry,270
+1,0,Egg 65,200
+1,0,Chilli egg,200
+1,0,Chicken 65,270
+1,0,Chicken 555,280
+1,0,Chicken lollipop,280
+1,0,Chilli lollipop,290
+1,0,Chilli wings,270
+1,0,Chicken Schezwan,290
+1,0,Pepper chicken,280
+1,0,Lemon chicken dry,280
+1,0,Hongkong chicken,300
+1,0,Singpore chicken,300
+1,0,Dragon Chicken,300
+1,0,Ginger chicken(Dry/Wet),300
+1,0,Chicken Manchurian(Dry/Wet),280
+1,0,Chilli Chicken (Dry/Wet),290
+1,0,Garlic Chicken(Dry/Wet),300
+7,0,Apollo Fish,300
+7,0,Chilli Prawns,300
+7,0,Chilli fish,300
+7,0,Prawns Manchurian,300
+7,0,Fish 65,300
+7,0,Chilli loose prawn,300
+7,0,Fish Manchurian,300
+7,0,Prawn 65,300
+7,0,Ginger Fish(B/L),300
+7,0,Hongkong Prawns,300
+7,0,Ginger Prawns (Dry),300
+7,0,Garlic Prawn,300
+1,1,Mushroom Tikka,250
+1,1,Paneer Tikka,220
+1,0,Chicken Tandoori,570
+1,0,Chicken Tandoori Half,290
+1,0,Kalmi Kabab 2 pieces,170
+1,0,Kalmi Kabab 4 pieces,300
+1,0,Chicken Tikka,300
+1,0,Tandoori Fish,300
+1,0,Tangdi Kabab 4 pieces,300
+1,0,Mirchi Kabab,300
+1,0,Alsani Kabab,300
+2,1,Green-peas Masala/Fry,190
+2,1,Paneer Curry,250
+2,1,Palak Paneer,270
+2,1,Paneer Butter Masala,260
+2,1,Paneer capsicum,260
+2,1,Cashew Paneer,280
+2,1,Mixed Veg Curry,200
+2,1,Veg Manchurian(Wet),220
+2,1,Cashew Tomato,270
+2,1,Mushroom Curry,230
+2,1,Mushroom Masala,250
+2,1,Methi Chaman,270
+2,1,Baby Corn Masala,240
+2,1,Baby Corn Mushroom Masala,270
+2,1,Cashew Masala,280
+2,1,Kadai Paneer,270
+2,1,Veg Chettinadu,200
+2,0,Chicken Fry,250
+2,0,Chicken Curry(B/L),250
+2,0,Chicken Curry,250
+2,0,Chicken Joint Fry/Gravy,260
+2,0,Malaysia Chicken,300
+2,0,Chicken Kadai Masala,270
+2,0,Chicken Masala Bone,270
+2,0,Butter Chicken,280
+2,0,Chicken Schezwan(Wet),300
+2,0,Chicken Mughlai,280
+2,0,Chicken Sultan,270
+2,0,Chicken Chittinad(B/L),290
+2,0,Chicken Chittinad(B),270
+2,0,LollyPop Masala,300
+2,0,Chicken Punjab,280
+2,0,Kadai Chicken,280
+2,0,Kalmi Kabab Masala,400
+2,0,Thandoori Chicken Masala(Half),350
+2,0,Thandoori Chicken Masala(Full),620
+2,0,Gongura Chicken(B),280
+2,0,Gongura Chicken (B/L),300
+2,0,Chicken Lalwani,280
+2,0,Chicken Tikki Masala,300
+2,0,Cashew Chicken,300
+2,0,Fish Pulusu(Tank Fish),280
+2,0,Fish Fry(B/L),300
+2,0,Fish Curry(B/L),300
+2,0,Prawn Curry,300
+2,0,Prawn Fry,300
+2,0,Prawn Mughlai,320
+2,0,Ginger Prawn (Wet),320
+2,0,Butter Prawn,320
+2,0,Prawn Chettinadu,320
+2,0,Mutton Curry,350
+2,0,Mutton Chettinadu,370
+2,0,Mutton Royal,370
+2,0,Boiled Eggs(2),40
+2,0,Egg Burji,140
+2,0,Egg Fry,150
+2,0,Egg Curry,150
+2,0,Egg Masala,150
+2,0,Chilli Egg,200
+3,0,Chicken Dum Biryani,250
+3,0,Chicken Fry Biryani,260
+3,0,Egg Biryani,200
+3,0,Special Biryani,270
+3,0,Plain Biryani,180
+3,0,The Dine House Biryani,350
+3,0,Chicken Joint Biryani,300
+3,0,Chicken Kabab Biryani,350
+3,0,Chicken Fry Biryani(B/L),300
+3,0,Mutton Biryani,350
+3,0,Prawn Biryani,300
+3,0,Lollypop Biryani(4 pieces),360
+3,0,Kheema Biryani,370
+3,0,Natukodi Biryani,350
+3,0,Wings Biryani (6 Pieces),350
+3,0,Mughalai Biryani,330
+3,1,Veg Fried Rice,200
+3,1,Mixed Fried Rice,280
+3,1,Schezwan Veg-Fried Rice,230
+3,1,Special Veg Fried Rice,280
+3,1,Cashew Veg Fried Rice,280
+3,1,Paneer Fried Rice,270
+3,1,Mushroom Fried Rice,270
+3,1,Jeera Rice,200
+3,0,Egg Fried Rice,200
+3,0,Schezwan Egg Fried Rice,240
+3,0,Chicken Fried Rice,250
+3,0,Schezwan Chicken Fried Rice,270
+3,0,Special Chicken Fried Rice,300
+3,0,Mixed Fried Rice (Non-Veg),320
+3,0,Spl Prawn Fried Rice,300
+3,0,Spl Mutton Fried Rice,350
+4,1,Veg Noodles,150
+4,1,Veg Schezwan Noodles,170
+4,0,Egg Noodles,180
+4,0,Chicken Noodles,200
+4,0,Egg Schezwan Noodles,200
+4,0,Chicken Schezwan,220
+4,0,Mutton Noodles,250
+4,1,Veg Momos,120
+4,1,Veg Fry Momos,130
+4,0,Chicken Momos,140
+4,0,Chicken Fried Momo,160
+4,1,Schezwan Momo,170
+4,0,Chicken Manchurian Momo,170
+4,0,Hot Garlic Chicken Momo,170
+4,1,Veg Manchurian Momo,150
+4,1,Hot Garlic Veg-Momo,170
+6,0,Dine house special Sheyfall,150
+6,0,Chicken Spring Roll,130
+6,1,Tandoori Roti,50
+6,1,Tandoori Butter Roti,60
+6,1,Plain Naan,50
+6,1,Garlic Nan,70
+6,1,Butter Naan,70
+6,1,Masala Kulcha,60
+6,1,Paneer Kulcha,100
+6,1,Stuffed Kulcha,80
+6,1,Plain Rice,70
+6,1,Curd Rice,100
+6,1,Curd,20
+5,1,Soft Drinks(300ml),25
+5,1,Mineral water,25
+5,1,Vanilla,50
+5,1,Strawberry,50
+5,1,Chocolate,60
+5,1,Butterscotch,70
+5,1,Anjeer Badam,100
+5,1,Kaju Kishmish,100
+5,1,Tutti Frutti,100
+5,1,American Nuts,100
+5,1,Pinocchio,100
+5,1,Spl IceCream,100

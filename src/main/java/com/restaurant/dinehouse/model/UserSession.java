@@ -21,7 +21,9 @@ public class UserSession {
     @Column(name = "liftTime")
     private Integer liftTime;
 
-    @Column(name = "createdOn")
+    @Basic(optional = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="createdOn", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Date createdOn;
 
     @Column(name = "expireOn")
@@ -78,5 +80,7 @@ public class UserSession {
     public void setExpireOn(Date expireOn) {
         this.expireOn = expireOn;
     }
+
+
 }
 

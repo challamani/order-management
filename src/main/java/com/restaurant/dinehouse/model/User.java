@@ -3,6 +3,7 @@ package com.restaurant.dinehouse.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 
 @Entity
@@ -53,6 +54,11 @@ public class User implements Serializable {
 
     @Column(name = "address")
     private String address;
+
+    @Basic(optional = false)
+    @Column(name="createdOn", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdOn;
 
     public Long getId() {
         return id;
@@ -155,5 +161,13 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
     }
 }

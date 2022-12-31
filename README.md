@@ -1,5 +1,75 @@
 # Order Management - Agent app
 
+#### we need to set below property to true to load system credentials into DB
+```shell
+system.startup-event.enable=true
+```
+
+#### access rest APIs using swagger-ui
+http://localhost:8080/dinehouse/api/v1/swagger-ui/index.html
+
+### login request and response
+```shell
+http://localhost:8080/dinehouse/api/v1/login
+{
+  "userId": "admin",
+  "pwd": "admin"
+}
+
+{
+  "status": "SUCCESS",
+  "data": {
+    "token": "b1f88eec-4472-4bc1-96ce-1ec14b295a5e",
+    "lifeTime": 360,
+    "userId": "admin",
+    "expiresOn": "2022-12-31T07:33:47.300+00:00"
+  }
+}
+```
+
+#### Items requests and response
+```shell
+http://localhost:8080/dinehouse/api/v1/items
+
+{
+  "status": "SUCCESS",
+  "data": [
+    {
+      "id": 193,
+      "name": "Sweet Corn Soup",
+      "status": "ACTIVE",
+      "categoryId": 1,
+      "categoryName": "Starters",
+      "price": 100,
+      "userId": "admin",
+      "createdOn": "2022-12-31T01:48:06.000+00:00",
+      "veg": true
+    },
+    {
+      "id": 194,
+      "name": "Hot & Sour Soup",
+      "status": "ACTIVE",
+      "categoryId": 1,
+      "categoryName": "Starters",
+      "price": 100,
+      "userId": "admin",
+      "createdOn": "2022-12-31T01:48:06.000+00:00",
+      "veg": true
+    },
+    {
+      "id": 195,
+      "name": "Manchow Soup",
+      "status": "ACTIVE",
+      "categoryId": 1,
+      "categoryName": "Starters",
+      "price": 100,
+      "userId": "admin",
+      "createdOn": "2022-12-31T01:48:06.000+00:00",
+      "veg": true
+    }
+  ]
+}
+```
 
 ```shell
 mkdir /Users/[your_username]/Develop

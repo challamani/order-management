@@ -1,5 +1,7 @@
 package com.restaurant.dinehouse.controller;
 
+import com.restaurant.dinehouse.exception.BadRequestException;
+import com.restaurant.dinehouse.exception.NotFoundException;
 import com.restaurant.dinehouse.model.DefaultErrorMessage;
 import com.restaurant.dinehouse.util.SystemConstants;
 import org.springframework.http.HttpHeaders;
@@ -9,11 +11,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,7 +23,9 @@ import java.util.List;
 public class DefaultResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  WebRequest request) {
 
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
         List<ObjectError> globalErrors = ex.getBindingResult().getGlobalErrors();
@@ -40,7 +44,15 @@ public class DefaultResponseEntityExceptionHandler extends ResponseEntityExcepti
 
         DefaultErrorMessage defaultErrorMessage = new DefaultErrorMessage();
         defaultErrorMessage.setResponseCode(SystemConstants.BAD_REQUEST);
-        defaultErrorMessage.setResponseText("Bad request " + errors.toString());
+        defaultErrorMessage.setResponseText("Bad request " + errors);
         return new ResponseEntity(defaultErrorMessage, headers, status);
     }
+
+    @ExceptionHandler(value = {BadRequestException.class, NotFoundException.class})
+    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+        String bodyOfResponse = ex.getMessage();
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
 }

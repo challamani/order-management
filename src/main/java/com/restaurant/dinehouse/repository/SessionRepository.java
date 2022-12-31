@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface SessionRepository extends CrudRepository<UserSession, Long> {
     @Override
     Iterable<UserSession> findAll();
+
+    void deleteByUserId(String userId);
 }

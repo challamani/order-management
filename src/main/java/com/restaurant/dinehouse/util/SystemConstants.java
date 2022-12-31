@@ -7,6 +7,9 @@ public class SystemConstants {
     public static final Integer TOKEN_LIFE_TIME=360;
     public static final String USER_ACTIVE_STATUS="ACTIVE";
 
+    public static final String SYS_ADMIN_USER="admin";
+    public static final String SYS_MISC_USER="misc";
+    public static final String ITEM_ACTIVE_STATUS="ACTIVE";
     public enum OrderStatus {
         ACTIVE,
         BLOCKED,

@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class SystemProperties {
 
     private HashMap<String,String> serviceCodes;
-    private HashMap<String,String> systemCredentials;
+    private HashMap<String,User> systemCredentials;
 
     public HashMap<String, String> getServiceCodes() {
         return serviceCodes;
@@ -15,11 +15,11 @@ public class SystemProperties {
         this.serviceCodes = serviceCodes;
     }
 
-    public HashMap<String, String> getSystemCredentials() {
+    public HashMap<String, User> getSystemCredentials() {
         return systemCredentials;
     }
 
-    public void setSystemCredentials(HashMap<String, String> systemCredentials) {
+    public void setSystemCredentials(HashMap<String, User> systemCredentials) {
         this.systemCredentials = systemCredentials;
     }
 }

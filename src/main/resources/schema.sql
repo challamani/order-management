@@ -42,12 +42,12 @@ CREATE TABLE IF NOT EXISTS `user_session` (
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE IF NOT EXISTS `category` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20),
   `name` varchar(100) NOT NULL,
   `createdOn` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -55,10 +55,11 @@ CREATE TABLE IF NOT EXISTS `category` (
 CREATE TABLE IF NOT EXISTS `item` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `status` varchar(10) NOT NULL,
+  `status` varchar(20) NOT NULL,
   `categoryId` int NOT NULL,
   `price` double NOT NULL,
   `userId` varchar(20) NOT NULL,
+  `isVeg` char(1) NOT NULL,
   `createdOn` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
