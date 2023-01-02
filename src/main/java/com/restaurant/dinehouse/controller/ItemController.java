@@ -1,9 +1,6 @@
 package com.restaurant.dinehouse.controller;
 
-import com.restaurant.dinehouse.model.Category;
-import com.restaurant.dinehouse.model.Item;
-import com.restaurant.dinehouse.model.Response;
-import com.restaurant.dinehouse.model.User;
+import com.restaurant.dinehouse.model.*;
 import com.restaurant.dinehouse.service.ItemService;
 import com.restaurant.dinehouse.util.SystemConstants;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +27,10 @@ public class ItemController {
     public ResponseEntity<Response<List<Item>>> getItems() {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, itemService.getItems()));
     }
+
+    @GetMapping("/baseInfo")
+    public ResponseEntity<Response<BaseInfo>> getBaseInfo() {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, itemService.getBaseInfo()));
+    }
+
 }

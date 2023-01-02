@@ -15,7 +15,6 @@ http://localhost:8080/dinehouse/api/v1/login
   "userId": "admin",
   "pwd": "admin"
 }
-
 {
   "status": "SUCCESS",
   "data": {
@@ -24,6 +23,72 @@ http://localhost:8080/dinehouse/api/v1/login
     "userId": "admin",
     "expiresOn": "2022-12-31T07:33:47.300+00:00"
   }
+}
+```
+
+#### BaseInfo API 
+```shell
+http://localhost:8080/dinehouse/api/v1/baseInfo
+{
+  "status": "SUCCESS",
+  "data": {
+    "locations": [
+      {
+        "id": 0,
+        "name": "TAB001",
+        "status": true,
+        "type": "dinein",
+        "createdOn": "2023-01-02T23:43:38.000+00:00"
+      }
+    ],
+    "items": [
+      {
+        "id": 193,
+        "name": "Sweet Corn Soup",
+        "status": "ACTIVE",
+        "categoryId": 1,
+        "categoryName": "Starters",
+        "price": 100,
+        "userId": "admin",
+        "createdOn": "2022-12-31T01:48:06.000+00:00",
+        "veg": true
+      }
+    ],
+    "categories": [
+      {
+        "id": 1,
+        "name": "Starters",
+        "status": true,
+        "createdOn": "2022-12-31T01:48:06.000+00:00"
+      }
+    ]
+  }
+}
+```
+
+#### Create order example 
+```shell
+POST
+http://localhost:8080/dinehouse/api/v1/order
+request
+{
+  "userId": "admin",
+  "status": "OPEN",
+  "type": "DINEIN",
+  "address": "TAB001",
+  "price": 300,
+  "discount": 0,
+  "payableAmount": 300,
+  "discAmount": 0,
+  "description": "Dinehouse Biryani",
+  "orderItems": [
+    {
+      "itemId": 283,
+      "quantity": 1,
+      "price": 300,
+      "status": "ACTIVE"
+    }
+  ]
 }
 ```
 

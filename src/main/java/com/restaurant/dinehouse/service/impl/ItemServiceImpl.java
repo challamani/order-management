@@ -1,9 +1,11 @@
 package com.restaurant.dinehouse.service.impl;
 
+import com.restaurant.dinehouse.model.BaseInfo;
 import com.restaurant.dinehouse.model.Category;
 import com.restaurant.dinehouse.model.Item;
 import com.restaurant.dinehouse.repository.CategoryRepository;
 import com.restaurant.dinehouse.repository.ItemRepository;
+import com.restaurant.dinehouse.repository.LocationRepository;
 import com.restaurant.dinehouse.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
+    private final LocationRepository locationRepository;
 
     @Override
     public List<Category> getCategories() {
@@ -42,7 +45,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item getItemById(Integer itemId) {
-        return null;
+    public Item getItemById(Long itemId) {
+        return itemRepository.findById(itemId).orElse(null);
+    }
+
+    @Override
+    public BaseInfo getBaseInfo() {
+        BaseInfo baseInfo = new BaseInfo();
+        baseInfo.setCategories(new ArrayList<>());
+        baseInfo.setLocations(new ArrayList<>());
+        baseInfo.setItems(new ArrayList<>());
+
+        categoryRepository.findAll().iterator().forEachRemaining(baseInfo.getCategories()::add);
+        itemRepository.findAll().iterator().forEachRemaining(baseInfo.getItems()::add);
+        locationRepository.findAll().iterator().forEachRemaining(baseInfo.getLocations()::add);
+        return baseInfo;
     }
 }

@@ -1,5 +1,6 @@
 package com.restaurant.dinehouse.service;
 
+import com.restaurant.dinehouse.model.BaseInfo;
 import com.restaurant.dinehouse.model.Category;
 import com.restaurant.dinehouse.model.Item;
 
@@ -13,5 +14,7 @@ public interface ItemService {
 
     List<Item> getItemsByCategory(Integer categoryId);
 
-    Item getItemById(Integer itemId);
+    Item getItemById(Long itemId);
+
+    BaseInfo getBaseInfo();
 }
