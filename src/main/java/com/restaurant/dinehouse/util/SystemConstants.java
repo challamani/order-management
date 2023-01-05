@@ -26,4 +26,12 @@ public class SystemConstants {
         DELIVERY,
         OTHER
     }
+
+    public class Store {
+        public static final String name="The Dine House";
+        public static final String address1="Plot No 366, Opp KIMS Hospital";
+        public static final String address2="Srikakulam RD, 532005, AP";
+        public static final String GSTNo="XXXXXXXXXXX";
+        public static final String contactNo="XXXXXXXXXXX";
+    }
 }

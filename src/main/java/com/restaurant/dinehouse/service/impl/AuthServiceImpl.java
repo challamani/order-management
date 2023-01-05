@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
         String cipherText = user.getPwd();
         log.info("cipherText from DB userId {} :: {}", request.getUserId(), cipherText);
-        String generatedText = CipherUtil.getSHA256Digest(request.getPwd());
+        String generatedText = CipherUtil.getSHA256Digest(request.getPassword());
 
         if (cipherText.equals(generatedText)) {
             sessionRepository.deleteByUserId(request.getUserId());

@@ -55,6 +55,9 @@ public class User implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "deviceId")
+    private String deviceId;
+
     @Basic(optional = false)
     @Column(name="createdOn", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -169,5 +172,13 @@ public class User implements Serializable {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

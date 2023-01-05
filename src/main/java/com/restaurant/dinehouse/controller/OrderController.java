@@ -22,6 +22,11 @@ public class OrderController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.addOrder(order)));
     }
 
+    @PutMapping("/order")
+    public ResponseEntity<Response<Order>> updateOrder(@RequestBody Order order) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.updateOrder(order)));
+    }
+
     @PostMapping("/location")
     public ResponseEntity<Response<Location>> createLocation(@RequestBody Location location) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.addLocation(location)));
@@ -30,6 +35,11 @@ public class OrderController {
     @GetMapping("/order/{orderId}")
     public ResponseEntity<Response<Order>> getOrder(@PathVariable(name = "orderId") Long orderId) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrderById(orderId)));
+    }
+
+    @GetMapping("/order/{userId}")
+    public ResponseEntity<Response<List<Order>>> getOrderByUser(@PathVariable(name = "userId") String userId) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrdersByUser(userId)));
     }
 
 

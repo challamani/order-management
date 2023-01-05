@@ -7,5 +7,5 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public class AuthRequest {
     private String userId;
-    private String pwd;
+    private String password;
 }
