@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface OrderItemRepository extends CrudRepository<OrderItem,Long> {
     List<OrderItem> findByOrderId(Long orderId);
+    void deleteByOrderId(Long orderId);
 }

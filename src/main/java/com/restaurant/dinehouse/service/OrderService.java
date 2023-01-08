@@ -18,4 +18,6 @@ public interface OrderService {
     List<Order> getOrdersByUser(String userId);
 
     Order getOrderById(Long orderId);
+
+    Boolean generateBill(Long orderId);
 }

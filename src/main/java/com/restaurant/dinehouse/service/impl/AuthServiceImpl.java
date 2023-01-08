@@ -1,6 +1,7 @@
 package com.restaurant.dinehouse.service.impl;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.restaurant.dinehouse.exception.BadRequestException;
 import com.restaurant.dinehouse.exception.NotFoundException;
 import com.restaurant.dinehouse.model.User;
@@ -12,6 +13,7 @@ import com.restaurant.dinehouse.repository.UserRepository;
 import com.restaurant.dinehouse.service.AuthService;
 import com.restaurant.dinehouse.util.CipherUtil;
 import com.restaurant.dinehouse.util.SystemConstants;
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +38,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String cipherText = user.getPwd();
-        log.info("cipherText from DB userId {} :: {}", request.getUserId(), cipherText);
         String generatedText = CipherUtil.getSHA256Digest(request.getPassword());
 
         if (cipherText.equals(generatedText)) {
@@ -51,7 +52,9 @@ public class AuthServiceImpl implements AuthService {
             userSession.setExpireOn(calendar.getTime());
 
             sessionRepository.save(userSession);
-            return createAuthResponse(userSession);
+            AuthResponse authResponse = createAuthResponse(userSession);
+            authResponse.setAdmin(user.isAdmin());
+            return authResponse;
         } else {
             throw new BadRequestException("Wrong credentials try again!");
         }

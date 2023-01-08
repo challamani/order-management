@@ -17,7 +17,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
     @PostMapping("/user")

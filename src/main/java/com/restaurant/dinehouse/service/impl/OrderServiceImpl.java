@@ -5,11 +5,13 @@ import com.restaurant.dinehouse.exception.BadRequestException;
 import com.restaurant.dinehouse.model.Item;
 import com.restaurant.dinehouse.model.Location;
 import com.restaurant.dinehouse.model.Order;
+import com.restaurant.dinehouse.print.PrinterService;
 import com.restaurant.dinehouse.repository.LocationRepository;
 import com.restaurant.dinehouse.repository.OrderItemRepository;
 import com.restaurant.dinehouse.repository.OrderRepository;
 import com.restaurant.dinehouse.service.ItemService;
 import com.restaurant.dinehouse.service.OrderService;
+import com.restaurant.dinehouse.util.SystemConstants;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ItemService itemService;
     private final OrderItemRepository orderItemRepository;
+    private final PrinterService printerService;
 
     @Override
     public Location addLocation(Location location) {
@@ -58,21 +61,7 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException(e);
         }
         if (Objects.nonNull(order) && !CollectionUtils.isEmpty(order.getOrderItems())) {
-
-            AtomicReference<Double> orderAmount = new AtomicReference<>(0.0);
-            order.getOrderItems().stream().forEach(orderItem -> {
-                Item item = itemService.getItemById(orderItem.getItemId());
-                orderItem.setItemName(itemService.getItemById(orderItem.getItemId()).getName());
-                orderItem.setPrice(item.getPrice());
-                orderAmount.updateAndGet(value -> (value + (item.getPrice() * orderItem.getQuantity())));
-
-            });
-
-            Order dbOrder = orderRepository.save(order);
-            Long orderId = dbOrder.getId();
-            order.getOrderItems().stream().forEach(orderItem -> orderItem.setOrderId(orderId));
-            orderItemRepository.saveAll(order.getOrderItems());
-            return fetchOrderById(orderId);
+            return processAndReturnOrder(order);
         }
         throw new RuntimeException("failed to create given order!");
     }
@@ -81,19 +70,52 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order updateOrder(Order order) {
         if (order.getId() > 0 && !CollectionUtils.isEmpty(order.getOrderItems())) {
-
+            orderItemRepository.deleteByOrderId(order.getId());
+            return processAndReturnOrder(order);
         }
-        return null;
+        throw new RuntimeException("failed to update the given order!" + order.getId());
     }
 
+    private Order processAndReturnOrder(Order order){
+        AtomicReference<Double> orderAmount = new AtomicReference<>(0.0);
+        order.getOrderItems().stream().forEach(orderItem -> {
+            Item item = itemService.getItemById(orderItem.getItemId());
+            orderItem.setItemName(itemService.getItemById(orderItem.getItemId()).getName());
+            orderItem.setPrice(item.getPrice());
+            orderAmount.updateAndGet(value -> (value + (item.getPrice() * orderItem.getQuantity())));
+        });
+
+        order.setPrice(orderAmount.get());
+        order.setPayableAmount(orderAmount.get());
+        Order dbOrder = orderRepository.save(order);
+        Long orderId = dbOrder.getId();
+        order.getOrderItems().stream().forEach(orderItem -> orderItem.setOrderId(orderId));
+        orderItemRepository.saveAll(order.getOrderItems());
+        return fetchOrderById(orderId);
+    }
     @Override
     public List<Order> getOrdersByUser(String userId) {
-        return null;
+        List<Order> orders = orderRepository.findByUserId(userId);
+        orders.stream().forEach(order -> {
+            order.setOrderItems(orderItemRepository.findByOrderId(order.getId()));
+        });
+        return orders;
     }
 
     @Override
     public Order getOrderById(Long orderId) {
         return fetchOrderById(orderId);
+    }
+
+    @Override
+    public Boolean generateBill(Long orderId) {
+        boolean isBillGenerated = printerService.print(orderId);
+        if (isBillGenerated) {
+            Order dbOrder = orderRepository.findById(orderId).get();
+            dbOrder.setStatus(SystemConstants.OrderStatus.BILL_GENERATED);
+            orderRepository.save(dbOrder);
+        }
+        return isBillGenerated;
     }
 
     private Order fetchOrderById(Long orderId){

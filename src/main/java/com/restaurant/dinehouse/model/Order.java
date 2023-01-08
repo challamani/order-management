@@ -19,7 +19,6 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     public Order() {
     }
 
@@ -43,6 +42,9 @@ public class Order implements Serializable {
     @Column(name = "address")
     @NotNull
     private String address;
+
+    @Column(name = "customerName")
+    private String customerName;
 
     @Basic(optional = false)
     @Column(name="createdOn", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
@@ -195,5 +197,13 @@ public class Order implements Serializable {
 
     public void setExternalOrderId(String externalOrderId) {
         this.externalOrderId = externalOrderId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

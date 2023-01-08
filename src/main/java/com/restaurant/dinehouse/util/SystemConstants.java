@@ -15,7 +15,32 @@ public class SystemConstants {
         PENDING,
         DECLINED,
         PREPARING,
-        DELIVERED
+        DELIVERED,
+        BILL_GENERATED,
+        PAID
+    }
+
+    public enum PaymentMethod {
+        PhonePe,
+        ZomatoPay,
+        Cash,
+        Card,
+        Paytm,
+        Pending
+    }
+
+    public enum PaymentType {
+        Wages,
+        Rent,
+        Chicken,
+        Gas,
+        Vegetables,
+        Grocery,
+        Rice,
+        Maintenance,
+        AdvancePay,
+        Other,
+        Order
     }
 
     public enum OrderType {
@@ -25,6 +50,11 @@ public class SystemConstants {
         SWIGGY,
         DELIVERY,
         OTHER
+    }
+
+    public enum TranType {
+        Cr,
+        Dr
     }
 
     public class Store {

@@ -1,23 +1,22 @@
 package com.restaurant.dinehouse.print;
 
 
+import com.restaurant.dinehouse.model.Order;
+import com.restaurant.dinehouse.model.OrderItem;
+import com.restaurant.dinehouse.repository.OrderItemRepository;
+import com.restaurant.dinehouse.repository.OrderRepository;
 import com.restaurant.dinehouse.util.SystemConstants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
@@ -25,7 +24,11 @@ import javax.print.attribute.standard.Sides;
 
 @Service
 @Slf4j
-public class PrinterService implements Printable {
+@RequiredArgsConstructor
+public class PrinterService{
+
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public List<String> getPrinters() {
 
@@ -43,7 +46,7 @@ public class PrinterService implements Printable {
         return printerList;
     }
 
-    public void print() {
+    public boolean print(Long orderId) {
         String printerName = "EPSON TM-m30-S/A";
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
@@ -66,23 +69,17 @@ public class PrinterService implements Printable {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Center));
+            writeHeader(outputStream);
+            writeLineItem(outputStream,orderId);
 
-            outputStream.write(POS.POSPrinter.CharSize.DoubleHeight3());
-            outputStream.write(SystemConstants.Store.name.getBytes());
-            outputStream.write(SystemConstants.Store.address1.getBytes());
-            outputStream.write(SystemConstants.Store.address2.getBytes());
-            outputStream.write(SystemConstants.Store.GSTNo.getBytes());
-            outputStream.write(SystemConstants.Store.contactNo.getBytes());
-
-            outputStream.write(POS.POSPrinter.CharSize.Normal());
             outputStream.write(POS.POSPrinter.SetStyles(POS.PrintStyle.None));
-            outputStream.write(POS.POSPrinter.BarCode.SetBarcodeHeightInDots(600));
-            outputStream.write(POS.POSPrinter.BarCode.SetBarWidth(POS.BarWidth.Thinnest));
-            outputStream.write(POS.POSPrinter.FontSelect.FontA());
-            outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Center));
+            /*
+                outputStream.write(POS.POSPrinter.BarCode.SetBarcodeHeightInDots(600));
+                outputStream.write(POS.POSPrinter.BarCode.SetBarWidth(POS.BarWidth.Thinnest));
+                outputStream.write(POS.POSPrinter.FontSelect.FontA());
+                outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Center));
+            */
             outputStream.write(POS.POSPrinter.CutPage());
-
         } catch (IOException ex) {
             log.error("failed at writing order-info to printer doc-job {}", ex);
         }
@@ -93,25 +90,52 @@ public class PrinterService implements Printable {
             job.print(doc, new HashPrintRequestAttributeSet());
         } catch (PrintException ex) {
             log.error("failed at creating printer job {}" + ex.getMessage());
+            return false;
         }
+        return true;
     }
 
-    @Override
-    public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
-        if (page > 0) {
-            return NO_SUCH_PAGE;
+    private void writeHeader(ByteArrayOutputStream outputStream) throws IOException {
+        outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Center));
+        outputStream.write(POS.POSPrinter.CharSize.DoubleHeight3());
+        outputStream.write(SystemConstants.Store.name.getBytes());
+        outputStream.write(SystemConstants.Store.address1.getBytes());
+        outputStream.write(SystemConstants.Store.address2.getBytes());
+        outputStream.write(SystemConstants.Store.GSTNo.getBytes());
+        outputStream.write(SystemConstants.Store.contactNo.getBytes());
+    }
+
+    private void writeLineItem(ByteArrayOutputStream outputStream, Long orderId) throws IOException {
+
+        outputStream.write(POS.POSPrinter.CharSize.Normal());
+        outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Right));
+        Optional<Order> dbOrder = orderRepository.findById(orderId);
+        if(dbOrder.isPresent()) {
+            Order order = dbOrder.get();
+            outputStream.write("Order# ".concat(Long.toString(order.getId())).getBytes());
+            List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
+            orderItems.stream().forEach(orderItem -> {
+                String itemLine = String.format("%-20s", orderItem.getItemName())
+                        .concat("  ")
+                        .concat(orderItem.getQuantity().toString())
+                        .concat("  ")
+                        .concat(orderItem.getPrice().toString());
+                try {
+                    outputStream.write(itemLine.getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            outputStream.write("_________________________________________".getBytes());
+            outputStream.write(String.format("%-25s", "Total")
+                    .concat(" ")
+                    .concat(order.getPayableAmount().toString())
+                    .getBytes());
         }
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(pf.getImageableX(), pf.getImageableY());
-
-        g.setFont(new Font("Roman", 0, 8));
-        g.drawString("Hello world !", 0, 10);
-        return PAGE_EXISTS;
     }
 
     public void printString(String printerName, String text) {
-
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 
@@ -119,9 +143,7 @@ public class PrinterService implements Printable {
         PrintService service = findPrintService(printerName, printService);
 
         DocPrintJob job = service.createPrintJob();
-
         try {
-
             byte[] bytes;
 
             bytes = text.getBytes("CP437");
@@ -160,15 +182,5 @@ public class PrinterService implements Printable {
         }
         return null;
     }
-
-    /** eample
-     *  PrinterService printerService = new PrinterService();
-     *         String printName = "EPSON TM-m30-S/A";
-     *         for (int i = 0; i < 1; i++) {
-     *             printerService.printString(printName, "\n Test Line " + i);
-     *         }
-     *         byte[] cutP = new byte[]{0x1d, 'V', 1};
-     *         printerService.printBytes("EPSON TM-U220 Receipt", cutP);
-     *         */
 
 }

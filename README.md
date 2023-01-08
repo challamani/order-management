@@ -68,9 +68,8 @@ http://localhost:8080/dinehouse/api/v1/baseInfo
 
 #### Create order example 
 ```shell
-POST
+POST - request
 http://localhost:8080/dinehouse/api/v1/order
-request
 {
   "userId": "admin",
   "status": "OPEN",
@@ -85,6 +84,32 @@ request
     {
       "itemId": 283,
       "quantity": 1,
+      "price": 300,
+      "status": "ACTIVE"
+    }
+  ]
+}
+```
+
+#### Order update
+```shell
+PUT request 
+http://localhost:8080/dinehouse/api/v1/order
+{
+  "id":100,
+  "userId": "admin",
+  "status": "OPEN",
+  "type": "DINEIN",
+  "address": "TAB001",
+  "price": 600,
+  "discount": 0,
+  "payableAmount": 600,
+  "discAmount": 0,
+  "description": "Dinehouse Biryani",
+  "orderItems": [
+    {
+      "itemId": 283,
+      "quantity": 2,
       "price": 300,
       "status": "ACTIVE"
     }
@@ -113,17 +138,6 @@ http://localhost:8080/dinehouse/api/v1/items
     {
       "id": 194,
       "name": "Hot & Sour Soup",
-      "status": "ACTIVE",
-      "categoryId": 1,
-      "categoryName": "Starters",
-      "price": 100,
-      "userId": "admin",
-      "createdOn": "2022-12-31T01:48:06.000+00:00",
-      "veg": true
-    },
-    {
-      "id": 195,
-      "name": "Manchow Soup",
       "status": "ACTIVE",
       "categoryId": 1,
       "categoryName": "Starters",

@@ -12,4 +12,5 @@ public class AuthResponse {
     private Integer lifeTime;
     private String userId;
     private Date expiresOn;
+    private boolean isAdmin;
 }

@@ -5,6 +5,7 @@ import com.restaurant.dinehouse.service.OrderService;
 import com.restaurant.dinehouse.util.SystemConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-
 
     @PostMapping("/order")
     public ResponseEntity<Response<Order>> createOrder(@RequestBody Order order) {
@@ -37,10 +37,20 @@ public class OrderController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrderById(orderId)));
     }
 
-    @GetMapping("/order/{userId}")
-    public ResponseEntity<Response<List<Order>>> getOrderByUser(@PathVariable(name = "userId") String userId) {
+    @GetMapping("/orders/{userId}")
+    public ResponseEntity<Response<List<Order>>> getOrdersByUser(@PathVariable(name = "userId") String userId) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrdersByUser(userId)));
     }
 
+    @GetMapping("/bill/{orderId}")
+    public ResponseEntity<Response<Boolean>> generateBill(@PathVariable(name = "orderId") Long orderId) {
+
+        if (orderService.generateBill(orderId)) {
+            return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, true));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Response<>(SystemConstants.SUCCESS, false));
+
+    }
 
 }
