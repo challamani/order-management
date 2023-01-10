@@ -170,6 +170,63 @@ Response
 }
 ```
 
+#### Order payment
+```shell
+POST - dinehouse/api/v1/order-payment
+
+Request
+{
+  "userId": "{userId}",
+  "orderId": "3",
+  "method": "PhonePe",
+  "amount": 2000,
+  "description": "Partial payment"
+}
+
+Response -
+{
+  "status": "SUCCESS",
+  "data": {
+    "id": 4,
+    "userId": "admin",
+    "orderId": "3",
+    "paymentMethod": "PhonePe",
+    "tranGroup": "Order",
+    "type": "Cr",
+    "amount": 2000,
+    "description": "Partial payment - actual amount to pay 2200.0 but paid 2000.0"
+  }
+}
+```
+
+#### Bulk expenses capture
+```shell
+[
+  {
+    "userId": "{userId}",
+    "method": "Cash",
+    "type": "Wages",
+    "amount": 3600,
+    "description": "Chefs and Cleaning staff"
+  }
+]
+
+Response 
+{
+  "status": "SUCCESS",
+  "data": [
+    {
+      "id": 3,
+      "userId": "admin",
+      "paymentMethod": "Cash",
+      "tranGroup": "Wages",
+      "type": "Dr",
+      "amount": 3600,
+      "description": "Chefs and Cleaning staff"
+    }
+  ]
+}
+```
 #### Items requests and response
 ```shell
 http://localhost:8080/dinehouse/api/v1/items
