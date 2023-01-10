@@ -33,10 +33,10 @@ public class Transaction implements Serializable {
     @NotNull
     private SystemConstants.PaymentMethod paymentMethod;
 
-    @Column(name = "paymentType")
+    @Column(name = "tranGroup")
     @Enumerated(EnumType.ORDINAL)
     @NotNull
-    private SystemConstants.PaymentType paymentType;
+    private SystemConstants.TranGroup tranGroup;
 
     @Column(name = "type")
     @Enumerated(EnumType.ORDINAL)
@@ -87,12 +87,12 @@ public class Transaction implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    public SystemConstants.PaymentType getPaymentType() {
-        return paymentType;
+    public SystemConstants.TranGroup getTranGroup() {
+        return tranGroup;
     }
 
-    public void setPaymentType(SystemConstants.PaymentType paymentType) {
-        this.paymentType = paymentType;
+    public void setTranGroup(SystemConstants.TranGroup tranGroup) {
+        this.tranGroup = tranGroup;
     }
 
     public SystemConstants.TranType getType() {

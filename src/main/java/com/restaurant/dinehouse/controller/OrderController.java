@@ -23,7 +23,7 @@ public class OrderController {
     }
 
     @PutMapping("/order")
-    public ResponseEntity<Response<Order>> updateOrder(@RequestBody Order order) {
+    public ResponseEntity<Response<Order>> updateOrder( @RequestBody Order order) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.updateOrder(order)));
     }
 
@@ -38,12 +38,12 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{userId}")
-    public ResponseEntity<Response<List<Order>>> getOrdersByUser(@PathVariable(name = "userId") String userId) {
+    public ResponseEntity<Response<List<Order>>> getOrdersByUser( @PathVariable(name = "userId") String userId) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrdersByUser(userId)));
     }
 
     @GetMapping("/bill/{orderId}")
-    public ResponseEntity<Response<Boolean>> generateBill(@PathVariable(name = "orderId") Long orderId) {
+    public ResponseEntity<Response<Boolean>> generateBill( @PathVariable(name = "orderId") Long orderId) {
 
         if (orderService.generateBill(orderId)) {
             return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, true));

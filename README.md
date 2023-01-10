@@ -117,6 +117,48 @@ http://localhost:8080/dinehouse/api/v1/order
 }
 ```
 
+#### Order list
+```shell
+Get - Orders - /dinehouse/api/v1/orders/{admin}
+{
+  "status": "SUCCESS",
+  "data": [
+    {
+      "id": 1,
+      "userId": "admin",
+      "status": "PAID",
+      "type": "DINEIN",
+      "address": "T-A-01",
+      "price": 200,
+      "payableAmount": 200,
+      "orderItems": [
+        {
+          "id": 1,
+          "orderId": 1,
+          "createdOn": "2023-01-10T13:29:03.000+00:00",
+          "itemId": 1,
+          "itemName": "Sweet Corn Soup",
+          "quantity": 1,
+          "price": 100,
+          "offerId": null,
+          "status": "ACTIVE"
+        },
+        {
+          "id": 2,
+          "orderId": 1,
+          "createdOn": "2023-01-10T13:29:03.000+00:00",
+          "itemId": 3,
+          "itemName": "Manchow Soup",
+          "quantity": 1,
+          "price": 100,
+          "status": "ACTIVE"
+        }
+      ]
+    }
+  ]
+}
+
+```
 #### Items requests and response
 ```shell
 http://localhost:8080/dinehouse/api/v1/items

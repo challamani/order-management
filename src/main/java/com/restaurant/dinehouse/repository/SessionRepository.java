@@ -8,4 +8,6 @@ public interface SessionRepository extends CrudRepository<UserSession, Long> {
     Iterable<UserSession> findAll();
 
     void deleteByUserId(String userId);
+
+    UserSession findByToken(String token);
 }

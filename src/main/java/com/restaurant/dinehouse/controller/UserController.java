@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<Response<User>> createUser(@RequestBody User user) {
+    public ResponseEntity<Response<User>> createUser( @RequestBody User user) {
         User modifiedUser = userService.addUser(user);
         modifiedUser.setPwd(null);
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, modifiedUser));

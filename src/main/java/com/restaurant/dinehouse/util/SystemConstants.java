@@ -29,7 +29,7 @@ public class SystemConstants {
         Pending
     }
 
-    public enum PaymentType {
+    public enum TranGroup {
         Wages,
         Rent,
         Chicken,

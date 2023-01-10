@@ -15,6 +15,7 @@ import com.restaurant.dinehouse.util.SystemConstants;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -81,24 +82,54 @@ public class OrderServiceImpl implements OrderService {
         order.getOrderItems().stream().forEach(orderItem -> {
             Item item = itemService.getItemById(orderItem.getItemId());
             orderItem.setItemName(itemService.getItemById(orderItem.getItemId()).getName());
-            orderItem.setPrice(item.getPrice());
-            orderAmount.updateAndGet(value -> (value + (item.getPrice() * orderItem.getQuantity())));
+            orderItem.setPrice( orderItem.getQuantity() * item.getPrice());
+            orderItem.setId(0l);
+            orderAmount.updateAndGet(value -> value + orderItem.getPrice());
         });
 
         order.setPrice(orderAmount.get());
         order.setPayableAmount(orderAmount.get());
+        if(Objects.isNull(order.getStatus())){
+            order.setStatus(SystemConstants.OrderStatus.OPEN);
+        }
+
+        if(Objects.isNull(order.getType())){
+            order.setType(getOrderType(order.getAddress()));
+        }
+
         Order dbOrder = orderRepository.save(order);
         Long orderId = dbOrder.getId();
         order.getOrderItems().stream().forEach(orderItem -> orderItem.setOrderId(orderId));
         orderItemRepository.saveAll(order.getOrderItems());
         return fetchOrderById(orderId);
     }
+
+    private SystemConstants.OrderType getOrderType(String address){
+        if(StringUtils.isBlank(address)){
+            return SystemConstants.OrderType.DINEIN;
+        }
+
+        if(StringUtils.containsIgnoreCase(address, SystemConstants.OrderType.ZOMATO.name())){
+            return SystemConstants.OrderType.ZOMATO;
+        }
+
+        if(StringUtils.containsIgnoreCase(address,SystemConstants.OrderType.DELIVERY.name())){
+            return SystemConstants.OrderType.DELIVERY;
+        }
+
+        if(StringUtils.containsIgnoreCase(address,SystemConstants.OrderType.SWIGGY.name())){
+            return SystemConstants.OrderType.SWIGGY;
+        }
+
+        if(StringUtils.containsIgnoreCase(address,SystemConstants.OrderType.TAKEAWAY.name())){
+            return SystemConstants.OrderType.TAKEAWAY;
+        }
+        return SystemConstants.OrderType.DINEIN;
+    }
     @Override
     public List<Order> getOrdersByUser(String userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
-        orders.stream().forEach(order -> {
-            order.setOrderItems(orderItemRepository.findByOrderId(order.getId()));
-        });
+        orders.stream().forEach(order -> order.setOrderItems(orderItemRepository.findByOrderId(order.getId())));
         return orders;
     }
 
