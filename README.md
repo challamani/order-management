@@ -119,7 +119,7 @@ http://localhost:8080/dinehouse/api/v1/order
 
 #### Order list
 ```shell
-Get - Orders - /dinehouse/api/v1/orders/{admin}
+Get - Orders - /dinehouse/api/v1/orders/{userId}
 {
   "status": "SUCCESS",
   "data": [
@@ -157,8 +157,19 @@ Get - Orders - /dinehouse/api/v1/orders/{admin}
     }
   ]
 }
-
 ```
+
+#### Get The Bill
+```shell
+Get - /bill/{orderId}
+
+Response 
+{
+  "status": "Success",
+  "data": true
+}
+```
+
 #### Items requests and response
 ```shell
 http://localhost:8080/dinehouse/api/v1/items
