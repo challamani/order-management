@@ -33,6 +33,7 @@ public class SecurityConfig {
                 antMatchers("*").permitAll()
                 .and()
                 .httpBasic()
-                .disable().build();
+                .disable().
+                build();
     }
 }

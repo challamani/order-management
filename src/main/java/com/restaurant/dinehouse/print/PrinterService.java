@@ -42,18 +42,21 @@ public class PrinterService{
         for (PrintService printerService : printServices) {
             printerList.add(printerService.getName());
         }
-
         return printerList;
     }
 
     public boolean print(Long orderId) {
         String printerName = "EPSON TM-m30-S/A";
-        DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+        //DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
         //printRequestAttributeSet.add(Sides.DUPLEX);
         printRequestAttributeSet.add(Sides.ONE_SIDED);
-        PrintService printServices[] = PrintServiceLookup.lookupPrintServices(flavor, printRequestAttributeSet);
 
+        for(PrintService printerService: PrintServiceLookup.lookupPrintServices(null, null)){
+            log.info("printer name {}",printerService.getName());
+        }
+
+        PrintService printServices[] = PrintServiceLookup.lookupPrintServices(null, null);
         PrintService runningPrinter = null;
         List<String> printerList = new ArrayList<>();
         for (PrintService printerService : printServices) {
@@ -71,14 +74,8 @@ public class PrinterService{
         try {
             writeHeader(outputStream);
             writeLineItem(outputStream,orderId);
-
             outputStream.write(POS.POSPrinter.SetStyles(POS.PrintStyle.None));
-            /*
-                outputStream.write(POS.POSPrinter.BarCode.SetBarcodeHeightInDots(600));
-                outputStream.write(POS.POSPrinter.BarCode.SetBarWidth(POS.BarWidth.Thinnest));
-                outputStream.write(POS.POSPrinter.FontSelect.FontA());
-                outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Center));
-            */
+            outputStream.write(StringUtils.LF.getBytes());
             outputStream.write(POS.POSPrinter.CutPage());
         } catch (IOException ex) {
             log.error("failed at writing order-info to printer doc-job {}", ex);
@@ -96,50 +93,75 @@ public class PrinterService{
     }
 
     private void writeHeader(ByteArrayOutputStream outputStream) throws IOException {
+
         outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Center));
-        outputStream.write(POS.POSPrinter.CharSize.DoubleHeight3());
+        outputStream.write(POS.POSPrinter.CharSize.DoubleHeight2());
         outputStream.write(SystemConstants.Store.name.getBytes());
+        outputStream.write(StringUtils.LF.getBytes());
         outputStream.write(SystemConstants.Store.address1.getBytes());
+        outputStream.write(StringUtils.LF.getBytes());
         outputStream.write(SystemConstants.Store.address2.getBytes());
+        outputStream.write(StringUtils.LF.getBytes());
         outputStream.write(SystemConstants.Store.GSTNo.getBytes());
+        outputStream.write(StringUtils.LF.getBytes());
         outputStream.write(SystemConstants.Store.contactNo.getBytes());
+        outputStream.write(StringUtils.LF.getBytes());
     }
 
     private void writeLineItem(ByteArrayOutputStream outputStream, Long orderId) throws IOException {
 
-        outputStream.write(POS.POSPrinter.CharSize.Normal());
-        outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Right));
         Optional<Order> dbOrder = orderRepository.findById(orderId);
         if(dbOrder.isPresent()) {
             Order order = dbOrder.get();
-            outputStream.write("Order# ".concat(Long.toString(order.getId())).getBytes());
+            outputStream.write(POS.POSPrinter.CharSize.Normal());
+            outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Left));
+            outputStream.write(StringUtils.LF.getBytes());
+
+            outputStream.write("Order# ".concat(Long.toString(order.getId()))
+                    .concat(", Address/Table ").concat(order.getAddress())
+            .getBytes());
+
+            outputStream.write(StringUtils.LF.getBytes());
+            outputStream.write("_________________________________________________".getBytes());
+
+            outputStream.write(StringUtils.LF.getBytes());
+            outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Left));
             List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
             orderItems.stream().forEach(orderItem -> {
-                String itemLine = String.format("%-20s", orderItem.getItemName())
+
+                String derivedItemName = String
+                        .format("%" + (-30) + "s", orderItem.getItemName().length() > 29 ? orderItem.getItemName().substring(0,29): orderItem.getItemName())
+                        .replace(' ', ' ');
+
+                String itemLine = derivedItemName
                         .concat("  ")
                         .concat(orderItem.getQuantity().toString())
                         .concat("  ")
                         .concat(orderItem.getPrice().toString());
                 try {
                     outputStream.write(itemLine.getBytes());
+                    outputStream.write(StringUtils.LF.getBytes());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             });
 
-            outputStream.write("_________________________________________".getBytes());
-            outputStream.write(String.format("%-25s", "Total")
+            outputStream.write(StringUtils.LF.getBytes());
+            outputStream.write("_________________________________________________".getBytes());
+            outputStream.write(StringUtils.LF.getBytes());
+            outputStream.write(String.format("%-30s", "Total")
                     .concat(" ")
                     .concat(order.getPayableAmount().toString())
                     .getBytes());
+            outputStream.write(StringUtils.LF.getBytes());
         }
     }
 
     public void printString(String printerName, String text) {
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-        PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+        PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
 
-        PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
+        PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, printRequestAttributeSet);
         PrintService service = findPrintService(printerName, printService);
 
         DocPrintJob job = service.createPrintJob();

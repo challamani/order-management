@@ -140,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean generateBill(Long orderId) {
+        log.info("generateBill order {}",orderId);
         boolean isBillGenerated = printerService.print(orderId);
         if (isBillGenerated) {
             Order dbOrder = orderRepository.findById(orderId).get();
@@ -147,6 +148,15 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(dbOrder);
         }
         return isBillGenerated;
+    }
+
+    @Override
+    public List<Order> getCurrentDateOrders(boolean includeItems) {
+        List<Order> orders = orderRepository.findCurrentDateOrders();
+        if (includeItems) {
+            orders.stream().forEach(order -> order.setOrderItems(orderItemRepository.findByOrderId(order.getId())));
+        }
+        return orders;
     }
 
     private Order fetchOrderById(Long orderId){

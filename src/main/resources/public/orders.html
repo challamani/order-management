@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Binding Order Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+</head>
+<body>
+<div id="ordersView" style="height: 200px;" class="ag-theme-alpine"></div>
+<script type="text/javascript">
+ const gridOptions = {
+      columnDefs: [
+           { field: "id" },
+           { field: "address" },
+           { field: "price" },
+           { field: "type" },
+           { field: "userId" },
+           { field: "status" },
+           { field: "servedBy"},
+           { field: "createdOn"}
+         ],
+         defaultColDef: {sortable: true, filter: true},
+         rowSelection: 'multiple',
+         animateRows: true
+       };
+
+  const eGridDiv = document.getElementById("ordersView");
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+  fetch("http://localhost:8080/dinehouse/api/v1/view/orders")
+  .then(response => response.json())
+  .then(data => {
+     gridOptions.api.setRowData(data);
+  });
+</script>
+</body>
+</html>

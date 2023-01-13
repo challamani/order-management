@@ -20,4 +20,6 @@ public interface OrderService {
     Order getOrderById(Long orderId);
 
     Boolean generateBill(Long orderId);
+
+    List<Order> getCurrentDateOrders(boolean includeItems);
 }

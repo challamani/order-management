@@ -42,6 +42,17 @@ public class OrderController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrdersByUser(userId)));
     }
 
+    @GetMapping("/orders")
+    public ResponseEntity<Response<List<Order>>> getAllCurrentDateOrders() {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getCurrentDateOrders(true)));
+    }
+
+    @GetMapping("/view/orders")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<List<Order>> getTodayOrders() {
+        return ResponseEntity.ok(orderService.getCurrentDateOrders(false));
+    }
+
     @GetMapping("/bill/{orderId}")
     public ResponseEntity<Response<Boolean>> generateBill( @PathVariable(name = "orderId") Long orderId) {
 
