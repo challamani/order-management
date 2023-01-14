@@ -61,6 +61,30 @@ http://localhost:8080/dinehouse/api/v1/baseInfo
         "status": true,
         "createdOn": "2022-12-31T01:48:06.000+00:00"
       }
+    ],
+    "paymentMethods": [
+      "PhonePe",
+      "ZomatoPay",
+      "Cash",
+      "Card",
+      "Paytm",
+      "Pending"
+    ],
+    "tranGroups": [
+      "Wages",
+      "Rent",
+      "Chicken",
+      "Gas",
+      "Vegetables",
+      "Grocery",
+      "Rice",
+      "Maintenance",
+      "AdvancePay",
+      "Other",
+      "Order"
+    ],
+    "servers": [
+      "misc misc"
     ]
   }
 }
@@ -199,8 +223,9 @@ Response -
 }
 ```
 
-#### Bulk expenses capture
-```shell
+####  expenses capture
+```shell 
+POST - dinehouse/api/v1/expenses
 [
   {
     "userId": "{userId}",
@@ -223,38 +248,6 @@ Response
       "type": "Dr",
       "amount": 3600,
       "description": "Chefs and Cleaning staff"
-    }
-  ]
-}
-```
-#### Items requests and response
-```shell
-http://localhost:8080/dinehouse/api/v1/items
-
-{
-  "status": "SUCCESS",
-  "data": [
-    {
-      "id": 193,
-      "name": "Sweet Corn Soup",
-      "status": "ACTIVE",
-      "categoryId": 1,
-      "categoryName": "Starters",
-      "price": 100,
-      "userId": "admin",
-      "createdOn": "2022-12-31T01:48:06.000+00:00",
-      "veg": true
-    },
-    {
-      "id": 194,
-      "name": "Hot & Sour Soup",
-      "status": "ACTIVE",
-      "categoryId": 1,
-      "categoryName": "Starters",
-      "price": 100,
-      "userId": "admin",
-      "createdOn": "2022-12-31T01:48:06.000+00:00",
-      "veg": true
     }
   ]
 }

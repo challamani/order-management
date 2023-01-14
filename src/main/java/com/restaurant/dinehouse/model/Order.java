@@ -26,6 +26,9 @@ public class Order implements Serializable {
     @NotNull
     private String userId;
 
+    @Column(name = "servedBy")
+    private String servedBy;
+
     @Column(name = "phoneNo")
     private String phoneNo;
 
@@ -205,5 +208,13 @@ public class Order implements Serializable {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getServedBy() {
+        return servedBy;
+    }
+
+    public void setServedBy(String servedBy) {
+        this.servedBy = servedBy;
     }
 }

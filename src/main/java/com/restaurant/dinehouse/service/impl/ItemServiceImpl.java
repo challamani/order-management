@@ -6,13 +6,18 @@ import com.restaurant.dinehouse.model.Item;
 import com.restaurant.dinehouse.repository.CategoryRepository;
 import com.restaurant.dinehouse.repository.ItemRepository;
 import com.restaurant.dinehouse.repository.LocationRepository;
+import com.restaurant.dinehouse.repository.UserRepository;
 import com.restaurant.dinehouse.service.ItemService;
+import com.restaurant.dinehouse.util.SystemConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,6 +27,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<Category> getCategories() {
@@ -55,10 +61,22 @@ public class ItemServiceImpl implements ItemService {
         baseInfo.setCategories(new ArrayList<>());
         baseInfo.setLocations(new ArrayList<>());
         baseInfo.setItems(new ArrayList<>());
+        baseInfo.setServers(new ArrayList<>());
 
         categoryRepository.findAll().iterator().forEachRemaining(baseInfo.getCategories()::add);
         itemRepository.findAll().iterator().forEachRemaining(baseInfo.getItems()::add);
         locationRepository.findAll().iterator().forEachRemaining(baseInfo.getLocations()::add);
+
+        userRepository.findAll().iterator().forEachRemaining(user -> {
+            if(!user.isAdmin()){
+                baseInfo.getServers().add(String.join(" ",user.getFirstName(),user.getLastName()));
+            }
+        });
+        baseInfo.setPaymentMethods(Arrays.stream(SystemConstants.PaymentMethod.values())
+                .collect(Collectors.toList()));
+        baseInfo.setTranGroups(Arrays.stream(SystemConstants.TranGroup.values())
+                .collect(Collectors.toList()));
+
         return baseInfo;
     }
 }
