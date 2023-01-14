@@ -16,6 +16,6 @@ public interface TransactionRepository extends CrudRepository<Transaction,Long> 
     @Query(value = "select * from transactions where created_on >= CURDATE() and created_on < CURDATE() + INTERVAL 1 DAY", nativeQuery = true)
     List<Transaction> findCurrentDateTransactions();
 
-    @Query(value = "select * from transactions where type='Dr' and created_on >= CURDATE() and created_on < CURDATE() + INTERVAL 1 DAY", nativeQuery = true)
+    @Query(value = "select * from transactions where type='Dr' and (created_on >= CURDATE() and created_on < CURDATE() + INTERVAL 1 DAY)", nativeQuery = true)
     List<Transaction> findCurrentDateDebits();
 }

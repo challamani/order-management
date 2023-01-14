@@ -33,4 +33,10 @@ public class TransactionController {
     public ResponseEntity<Response<List<Transaction>>> getTransactions() {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, tranService.getCurrentDateTransactions()));
     }
+
+    @GetMapping("/view/transactions/dr")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<List<Transaction>> getDebitRecords() {
+        return ResponseEntity.ok(tranService.getDebitRecords());
+    }
 }

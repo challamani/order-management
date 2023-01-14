@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Binding Order Details</title>
+    <title>Binding Debit records</title>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
 </head>
 <body>
-<div id="ordersView" style="height: 900px;" class="ag-theme-alpine"></div>
+<div><span>Today's expense records</span></div>
+
+<div id="expensesView" style="height: 2000px;" class="ag-theme-alpine"></div>
 <script type="text/javascript">
  const gridOptions = {
       columnDefs: [
            { field: "id" },
-           { field: "address" },
-           { field: "price" },
-           { field: "type" },
+           { field: "amount" },
+           { field: "paymentMethod" },
+           { field: "tranGroup" },
+           { field: "description" },
            { field: "userId" },
-           { field: "status" },
-           { field: "servedBy"},
            { field: "createdOn"}
          ],
          defaultColDef: {sortable: true, filter: true},
@@ -23,10 +24,10 @@
          animateRows: true
        };
 
-  const eGridDiv = document.getElementById("ordersView");
+  const eGridDiv = document.getElementById("expensesView");
   new agGrid.Grid(eGridDiv, gridOptions);
 
-  fetch("http://localhost:8080/dinehouse/api/v1/view/orders")
+  fetch("http://localhost:8080/dinehouse/api/v1/view/transactions/dr")
   .then(response => response.json())
   .then(data => {
      gridOptions.api.setRowData(data);

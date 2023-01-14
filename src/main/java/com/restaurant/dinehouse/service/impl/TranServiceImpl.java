@@ -1,5 +1,6 @@
 package com.restaurant.dinehouse.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.restaurant.dinehouse.model.Order;
 import com.restaurant.dinehouse.model.Transaction;
 import com.restaurant.dinehouse.model.TransactionRequest;
@@ -7,6 +8,7 @@ import com.restaurant.dinehouse.repository.OrderRepository;
 import com.restaurant.dinehouse.repository.TransactionRepository;
 import com.restaurant.dinehouse.service.TranService;
 import com.restaurant.dinehouse.util.SystemConstants;
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,6 +31,12 @@ public class TranServiceImpl implements TranService {
     @Override
     @Transactional
     public Transaction saveOrderPaymentInfo(TransactionRequest transaction) {
+
+        try {
+            log.info("order payment request {}", Json.mapper().writeValueAsString(transaction));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         Transaction transactionRequest = new Transaction();
         StringBuilder desc = new StringBuilder(StringUtils.defaultIfBlank(transaction.getDescription(), ""));
@@ -89,6 +98,8 @@ public class TranServiceImpl implements TranService {
 
     @Override
     public List<Transaction> getDebitRecords() {
-        return null;
+        return transactionRepository.findCurrentDateTransactions().stream()
+                .filter(tran -> tran.getType() == SystemConstants.TranType.Dr)
+                .collect(Collectors.toList());
     }
 }
