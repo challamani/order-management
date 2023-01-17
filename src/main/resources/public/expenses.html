@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
     <title>Binding Debit records</title>
-    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.0.0/dist/ag-grid-community.min.js"></script>
+
+    <!--<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>-->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(function(){
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
 </head>
 <body>
-<div><span>Today's expense records</span></div>
+<div id="header"></div>
+<br/><br/><br/><br/>
+<div align="center"><span style="center">Today's expense records</span></div>
+
+<div align="right" style="margin-bottom: 4px">
+    <button onclick="addItems(undefined)">Add Items</button>
+    <button onclick="onRemoveSelected()">Remove Selected</button>
+</div>
 
 <div id="expensesView" style="height: 2000px;" class="ag-theme-alpine"></div>
-<script type="text/javascript">
- const gridOptions = {
-      columnDefs: [
-           { field: "id" },
-           { field: "amount" },
-           { field: "paymentMethod" },
-           { field: "tranGroup" },
-           { field: "description" },
-           { field: "userId" },
-           { field: "createdOn"}
-         ],
-         defaultColDef: {sortable: true, filter: true},
-         rowSelection: 'multiple',
-         animateRows: true
-       };
-
-  const eGridDiv = document.getElementById("expensesView");
-  new agGrid.Grid(eGridDiv, gridOptions);
-
-  fetch("http://localhost:8080/dinehouse/api/v1/view/transactions/dr")
-  .then(response => response.json())
-  .then(data => {
-     gridOptions.api.setRowData(data);
-  });
-</script>
+<script src="expenses.js"> </script>
+<div id="footer"></div>
 </body>
 </html>

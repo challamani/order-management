@@ -11,4 +11,5 @@ public interface TranService {
     List<Transaction> saveTransactions(List<TransactionRequest> transactions);
     List<Transaction> getCurrentDateTransactions();
     List<Transaction> getDebitRecords();
+    Long deleteTransactionById(Long id);
 }

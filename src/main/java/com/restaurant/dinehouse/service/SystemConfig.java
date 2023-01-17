@@ -85,6 +85,11 @@ public class SystemConfig {
         throw new RuntimeException("No credentials found!");
     }
 
+
+    public List<User> getUserCredentials(){
+        return SYSTEM_CREDENTIALS.values().stream().toList();
+    }
+
     public List<String> readSourceAsStream(String file) throws IOException {
         List<String> records = new ArrayList<>();
         try {

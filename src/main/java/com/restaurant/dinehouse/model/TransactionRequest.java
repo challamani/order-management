@@ -11,4 +11,5 @@ public class TransactionRequest {
     private SystemConstants.TranGroup type;
     private Double amount;
     private String description;
+    private Long id;
 }

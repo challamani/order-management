@@ -140,8 +140,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean generateBill(Long orderId) {
-        log.info("generateBill order {}",orderId);
-        boolean isBillGenerated = printerService.print(orderId);
+        log.info("Generate bill for order {}",orderId);
+        boolean isBillGenerated = printerService.print(orderId, false);
+        if(isBillGenerated) {
+            log.info("generate duplicate bill for order {}", orderId);
+            printerService.print(orderId, true);
+        }
         if (isBillGenerated) {
             Order dbOrder = orderRepository.findById(orderId).get();
             dbOrder.setStatus(SystemConstants.OrderStatus.BILL_GENERATED);

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,20 @@ public class TransactionController {
     @PostMapping("/expenses")
     public ResponseEntity<Response<List<Transaction>>> saveExpenseRecords(@RequestBody List<TransactionRequest> transactions) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, tranService.saveTransactions(transactions)));
+    }
+
+    @PostMapping("/ui/tran-record")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<Response<List<Transaction>>> savePaymentInfo(@RequestBody TransactionRequest transaction) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS,
+                tranService.saveTransactions(Arrays.asList(transaction))));
+    }
+
+    @DeleteMapping("/ui/tran-record/{id}")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<Response<Long>> deletePaymentInfo(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS,
+                tranService.deleteTransactionById(id)));
     }
 
     @PostMapping("/order-payment")

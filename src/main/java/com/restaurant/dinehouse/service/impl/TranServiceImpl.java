@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -82,6 +83,9 @@ public class TranServiceImpl implements TranService {
             transaction.setDescription(tran.getDescription());
             transaction.setOrderId(tran.getOrderId());
             transaction.setAmount(tran.getAmount());
+            if (Objects.nonNull(tran.getId()) && tran.getId() >0) {
+                transaction.setId(tran.getId());
+            }
             transactionList.add(transaction);
         });
 
@@ -101,5 +105,11 @@ public class TranServiceImpl implements TranService {
         return transactionRepository.findCurrentDateTransactions().stream()
                 .filter(tran -> tran.getType() == SystemConstants.TranType.Dr)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long deleteTransactionById(Long id) {
+        transactionRepository.deleteById(id);
+        return id;
     }
 }

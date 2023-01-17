@@ -45,7 +45,7 @@ public class PrinterService{
         return printerList;
     }
 
-    public boolean print(Long orderId) {
+    public boolean print(Long orderId, boolean isDuplicate) {
         String printerName = "EPSON TM-m30-S/A";
         //DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
@@ -76,6 +76,10 @@ public class PrinterService{
             writeLineItem(outputStream,orderId);
             outputStream.write(POS.POSPrinter.SetStyles(POS.PrintStyle.None));
             outputStream.write(StringUtils.LF.getBytes());
+            if(isDuplicate){
+                outputStream.write("DUPLICATE BILL".getBytes());
+                outputStream.write(StringUtils.LF.getBytes());
+            }
             outputStream.write(POS.POSPrinter.CutPage());
         } catch (IOException ex) {
             log.error("failed at writing order-info to printer doc-job {}", ex);
@@ -122,7 +126,15 @@ public class PrinterService{
             .getBytes());
 
             outputStream.write(StringUtils.LF.getBytes());
-            outputStream.write("_________________________________________________".getBytes());
+            String itemsHeader = String.format("%-29s", "Item")
+                    .concat("  ")
+                    .concat(String.format("%-3s", "Qty"))
+                    .concat("  ")
+                    .concat(String.format("%-6s", "Price"));
+            outputStream.write(itemsHeader.getBytes());
+
+            outputStream.write(StringUtils.LF.getBytes());
+            outputStream.write("_______________________________________________".getBytes());
 
             outputStream.write(StringUtils.LF.getBytes());
             outputStream.write(POS.POSPrinter.Justification(POS.Justifications.Left));
@@ -137,7 +149,7 @@ public class PrinterService{
                         .concat("  ")
                         .concat(orderItem.getQuantity().toString())
                         .concat("  ")
-                        .concat(orderItem.getPrice().toString());
+                        .concat(String.format("%-6s", orderItem.getPrice().toString()));
                 try {
                     outputStream.write(itemLine.getBytes());
                     outputStream.write(StringUtils.LF.getBytes());
@@ -147,7 +159,7 @@ public class PrinterService{
             });
 
             outputStream.write(StringUtils.LF.getBytes());
-            outputStream.write("_________________________________________________".getBytes());
+            outputStream.write("_______________________________________________".getBytes());
             outputStream.write(StringUtils.LF.getBytes());
             outputStream.write(String.format("%-30s", "Total")
                     .concat(" ")

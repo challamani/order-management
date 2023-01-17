@@ -6,6 +6,7 @@ import com.restaurant.dinehouse.model.User;
 import com.restaurant.dinehouse.repository.CategoryRepository;
 import com.restaurant.dinehouse.repository.ItemRepository;
 import com.restaurant.dinehouse.repository.UserRepository;
+import com.restaurant.dinehouse.util.CipherUtil;
 import com.restaurant.dinehouse.util.SystemConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         try {
             List<String> records = systemConfig.readSourceAsStream("/category.csv");
             records.forEach(record -> {
-                log.info("record {}",record);
+                log.info("record {}", record);
                 String[] tuples = record.split(",");
                 Category category = new Category();
                 category.setStatus(true);
@@ -56,12 +57,12 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         }
 
         Iterable<Category> categoryIterable = categoryRepository.findAll();
-        categoryIterable.iterator().forEachRemaining(category -> categoryMap.put(category.getId(),category));
+        categoryIterable.iterator().forEachRemaining(category -> categoryMap.put(category.getId(), category));
 
         try {
             List<String> records = systemConfig.readSourceAsStream("/items.csv");
             records.forEach(record -> {
-                log.info("record {}",record);
+                log.info("record {}", record);
                 String[] tuple = record.split(",");
                 Item item = new Item();
                 item.setCategoryId(Integer.parseInt(tuple[0]));
@@ -77,15 +78,12 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
             log.error("failed to read content /items.csv from class-path resource {}", e.getMessage());
         }
 
-        User user = userRepository.findByUserId(SystemConstants.SYS_ADMIN_USER);
-        if (Objects.isNull(user)) {
-            User adminUser = systemConfig.getSystemUserById(SystemConstants.SYS_ADMIN_USER);
-            userRepository.save(adminUser);
-        }
-        user = userRepository.findByUserId(SystemConstants.SYS_MISC_USER);
-        if (Objects.isNull(user)) {
-            User miscUser = systemConfig.getSystemUserById(SystemConstants.SYS_MISC_USER);
-            userRepository.save(miscUser);
-        }
+        systemConfig.getUserCredentials().stream().forEach(user1 -> {
+            User dbUser = userRepository.findByUserId(user1.getUserId());
+            if (Objects.isNull(dbUser)) {
+                user1.setPwd(CipherUtil.getSHA256Digest(user1.getUserId()));
+                userRepository.save(user1);
+            }
+        });
     }
 }

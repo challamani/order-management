@@ -3,34 +3,23 @@
 <head>
     <title>Binding Order Details</title>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(function(){
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
 </head>
 <body>
+
+<div id="header"></div>
+<br/><br/><br/><br/>
+
+<div align="center"><span>Today's DineIn Orders</span></div>
 <div id="ordersView" style="height: 900px;" class="ag-theme-alpine"></div>
-<script type="text/javascript">
- const gridOptions = {
-      columnDefs: [
-           { field: "id" },
-           { field: "address" },
-           { field: "price" },
-           { field: "type" },
-           { field: "userId" },
-           { field: "status" },
-           { field: "servedBy"},
-           { field: "createdOn"}
-         ],
-         defaultColDef: {sortable: true, filter: true},
-         rowSelection: 'multiple',
-         animateRows: true
-       };
+<script src="orders.js"> </script>
 
-  const eGridDiv = document.getElementById("ordersView");
-  new agGrid.Grid(eGridDiv, gridOptions);
-
-  fetch("http://localhost:8080/dinehouse/api/v1/view/orders")
-  .then(response => response.json())
-  .then(data => {
-     gridOptions.api.setRowData(data);
-  });
-</script>
+<div id="footer"></div>
 </body>
 </html>

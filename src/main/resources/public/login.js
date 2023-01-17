@@ -15,6 +15,7 @@ loginButton.addEventListener("click", (e) => {
         httpRequest.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
             setCookie("token", JSON.parse(this.responseText).data.token, 1);
+            setCookie("userId", JSON.parse(this.responseText).data.userId, 1);
             location.replace("http://localhost:8080/dinehouse/api/v1/main.html")
           }
         };
