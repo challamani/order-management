@@ -12,25 +12,23 @@ const gridOptions = {
             }
 
             if (action === "delete") {
-
               params.api.applyTransaction({
                 remove: [params.node.data]
               });
-
               var id = params.node.data.id;
               alert(id);
 
-              fetch('http://localhost:8080/dinehouse/api/v1/ui/tran-record/'+id, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(request)
-                            })
-                            .then(response => response.json())
-                            .then(response => console.log(JSON.stringify(response)))
-                            .then(response => location.replace("http://localhost:8080/dinehouse/api/v1/expenses.html"))
+              fetch('http://localhost:8080/dinehouse/api/v1/web-ui/tran-record/'+id, {
+                 method: 'DELETE',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify(request)
+              })
+              .then(response => response.json())
+              .then(response => console.log(JSON.stringify(response)))
+              .then(response => location.replace("http://localhost:8080/dinehouse/api/v1/expenses.html"))
             }
 
             if (action === "update") {
@@ -44,7 +42,7 @@ const gridOptions = {
                                 description: params.node.data.description
                             }
 
-              fetch('http://localhost:8080/dinehouse/api/v1/ui/tran-record', {
+              fetch('http://localhost:8080/dinehouse/api/v1/web-ui/tran-record', {
                   method: 'POST',
                   headers: {
                       'Accept': 'application/json',
@@ -129,7 +127,7 @@ const gridOptions = {
 const eGridDiv = document.getElementById("expensesView");
 new agGrid.Grid(eGridDiv, gridOptions);
 
-fetch("http://localhost:8080/dinehouse/api/v1/view/transactions/dr")
+fetch("http://localhost:8080/dinehouse/api/v1/web-ui/transactions/dr")
 .then(response => response.json())
 .then(data => {
    gridOptions.api.setRowData(data);

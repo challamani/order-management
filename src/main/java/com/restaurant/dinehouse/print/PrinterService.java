@@ -77,7 +77,7 @@ public class PrinterService{
             outputStream.write(POS.POSPrinter.SetStyles(POS.PrintStyle.None));
             outputStream.write(StringUtils.LF.getBytes());
             if(isDuplicate){
-                outputStream.write("DUPLICATE BILL".getBytes());
+                outputStream.write("******DUPLICATE BILL********".getBytes());
                 outputStream.write(StringUtils.LF.getBytes());
             }
             outputStream.write(POS.POSPrinter.CutPage());

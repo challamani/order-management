@@ -47,7 +47,7 @@ public class OrderController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getCurrentDateOrders(true)));
     }
 
-    @GetMapping("/view/orders")
+    @GetMapping("/web-ui/orders")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<List<Order>> getTodayOrders() {
         return ResponseEntity.ok(orderService.getCurrentDateOrders(false));
@@ -64,4 +64,15 @@ public class OrderController {
 
     }
 
+    @GetMapping("/web-ui/bill/{orderId}")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<Response<Boolean>> generateBillOnWebRequest( @PathVariable(name = "orderId") Long orderId) {
+
+        if (orderService.generateBill(orderId)) {
+            return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, true));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Response<>(SystemConstants.SUCCESS, false));
+
+    }
 }

@@ -25,14 +25,14 @@ public class TransactionController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, tranService.saveTransactions(transactions)));
     }
 
-    @PostMapping("/ui/tran-record")
+    @PostMapping("/web-ui/tran-record")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Response<List<Transaction>>> savePaymentInfo(@RequestBody TransactionRequest transaction) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS,
                 tranService.saveTransactions(Arrays.asList(transaction))));
     }
 
-    @DeleteMapping("/ui/tran-record/{id}")
+    @DeleteMapping("/web-ui/tran-record/{id}")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Response<Long>> deletePaymentInfo(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS,
@@ -40,7 +40,13 @@ public class TransactionController {
     }
 
     @PostMapping("/order-payment")
-    public ResponseEntity<Response<Transaction>> payForOrder( @RequestBody TransactionRequest transaction) {
+    public ResponseEntity<Response<Transaction>> payForOrder(@RequestBody TransactionRequest transaction) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, tranService.saveOrderPaymentInfo(transaction)));
+    }
+
+    @PostMapping("/web-ui/order-payment")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<Response<Transaction>> orderPayment(@RequestBody TransactionRequest transaction) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, tranService.saveOrderPaymentInfo(transaction)));
     }
 
@@ -49,7 +55,7 @@ public class TransactionController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, tranService.getCurrentDateTransactions()));
     }
 
-    @GetMapping("/view/transactions/dr")
+    @GetMapping("/web-ui/transactions/dr")
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<List<Transaction>> getDebitRecords() {
         return ResponseEntity.ok(tranService.getDebitRecords());
