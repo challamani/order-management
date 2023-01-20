@@ -148,8 +148,10 @@ public class OrderServiceImpl implements OrderService {
         }
         if (isBillGenerated) {
             Order dbOrder = orderRepository.findById(orderId).get();
-            dbOrder.setStatus(SystemConstants.OrderStatus.BILL_GENERATED);
-            orderRepository.save(dbOrder);
+            if(SystemConstants.OrderStatus.PAID != dbOrder.getStatus()) {
+                dbOrder.setStatus(SystemConstants.OrderStatus.BILL_GENERATED);
+                orderRepository.save(dbOrder);
+            }
         }
         return isBillGenerated;
     }

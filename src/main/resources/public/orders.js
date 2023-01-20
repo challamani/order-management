@@ -1,5 +1,6 @@
  const gridOptions = {
          suppressClickEdit: true,
+         suppressHorizontalScroll: true,
          onCellClicked(params) {
            if (params.column.colId === "action" && params.event.target.dataset.action) {
              let action = params.event.target.dataset.action;
@@ -13,7 +14,6 @@
 
              if (action === "bill") {
                var id = params.node.data.id;
-               alert("Order ::"+id);
 
                fetch('http://localhost:8080/dinehouse/api/v1/web-ui/bill/'+id, {
                     method: 'GET',
@@ -29,7 +29,6 @@
              }
              if (action === "update") {
                params.api.stopEditing(false);
-               alert(JSON.stringify(params.node.data));
 
                var request = {   orderId: params.node.data.id,
                                  userId: getCookie('userId'),
@@ -38,7 +37,6 @@
                                  amount: params.node.data.payableAmount,
                                  description: params.node.data.description
                              }
-               alert(JSON.stringify(request));
 
                fetch('http://localhost:8080/dinehouse/api/v1/web-ui/order-payment', {
                    method: 'POST',
@@ -137,6 +135,7 @@
   fetch("http://localhost:8080/dinehouse/api/v1/web-ui/orders")
   .then(response => response.json())
   .then(data => {
+     gridOptions.api.sizeColumnsToFit();
      gridOptions.api.setRowData(data);
   });
 

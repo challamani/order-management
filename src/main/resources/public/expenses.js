@@ -1,5 +1,6 @@
 const gridOptions = {
         suppressClickEdit: true,
+        suppressHorizontalScroll: true,
         onCellClicked(params) {
           if (params.column.colId === "action" && params.event.target.dataset.action) {
             let action = params.event.target.dataset.action;
@@ -16,7 +17,6 @@ const gridOptions = {
                 remove: [params.node.data]
               });
               var id = params.node.data.id;
-              alert(id);
 
               fetch('http://localhost:8080/dinehouse/api/v1/web-ui/tran-record/'+id, {
                  method: 'DELETE',
