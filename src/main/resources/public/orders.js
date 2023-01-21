@@ -91,7 +91,8 @@
            {
                 headerName: "price",
                 field: "payableAmount",
-                editable: true
+                editable: true,
+                type: 'rightAligned'
            },
            {
                 headerName: "Payment Options",
@@ -114,6 +115,10 @@
                 field: "description",
                 editable: true,
                 cellEditor: 'agTextCellEditor'
+           },
+           {
+                field: "createdOn",
+                editable: false
            },
            {
                headerName: "action",

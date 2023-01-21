@@ -41,7 +41,8 @@ public class SystemConstants {
         AdvancePay,
         Other,
 
-        Order
+        Order,
+        Drinks
     }
 
     public enum OrderType {

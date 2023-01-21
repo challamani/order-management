@@ -11,7 +11,7 @@ public interface OrderRepository extends CrudRepository<Order,Long> {
 
     List<Order> findByUserId(String userId);
 
-    @Query(value = "select * from order_master where created_on >= CURDATE() and created_on < CURDATE() + INTERVAL 1 DAY", nativeQuery = true)
+    @Query(value = "select * from order_master where created_on >= CURDATE() and created_on < CURDATE() + INTERVAL 1 DAY order by status", nativeQuery = true)
     List<Order> findCurrentDateOrders();
 
     @Query(value = "select m.user_id as userId, m.served_by as servedBy, count(*) as quantity,sum(m.payable_amount) as amount, " +

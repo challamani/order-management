@@ -28,12 +28,9 @@ public class User implements Serializable {
     @NotNull
     private boolean isAdmin;
 
-/*
     @Column(name = "isServer", columnDefinition = "boolean default false")
     @NotNull
     private boolean isServer;
-
- */
 
     @Column(name = "pwd")
     @NotNull
@@ -189,11 +186,11 @@ public class User implements Serializable {
         this.deviceId = deviceId;
     }
 
-    /*public boolean isServer() {
+    public boolean isServer() {
         return isServer;
     }
 
     public void setServer(boolean server) {
         isServer = server;
-    }*/
+    }
 }

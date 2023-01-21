@@ -80,11 +80,6 @@ const gridOptions = {
                 editable: false
            },
            {
-             field: "amount",
-             editable: true,
-             cellEditor: 'agTextCellEditor'
-           },
-           {
                 field: "paymentMethod",
                 editable: true,
                 cellEditor:'agSelectCellEditor',
@@ -97,7 +92,7 @@ const gridOptions = {
                 editable: true,
                 cellEditor:'agSelectCellEditor',
                 cellEditorParams: {
-                     values: ['Order', 'Wages', 'Rent', 'Chicken', 'Gas', 'Vegetables','Grocery', 'Rice', 'Maintenance', 'AdvancePay', 'Other']
+                     values: ['Order', 'Wages', 'Rent', 'Chicken', 'Gas', 'Vegetables','Grocery', 'Rice', 'Maintenance', 'AdvancePay', 'Other', 'Drinks']
                 }
            },
            {
@@ -109,6 +104,12 @@ const gridOptions = {
                 headerName: "Recorded By",
                 field: "userId",
                 editable: false
+           },
+           {
+                field: "amount",
+                editable: true,
+                cellEditor: 'agTextCellEditor',
+                type: 'rightAligned'
            },
            {
                  headerName: "action",

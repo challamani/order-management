@@ -68,7 +68,7 @@ public class ItemServiceImpl implements ItemService {
         locationRepository.findAll().iterator().forEachRemaining(baseInfo.getLocations()::add);
 
         userRepository.findAll().iterator().forEachRemaining(user -> {
-            if(!user.isAdmin()){
+            if(user.isServer()){
                 baseInfo.getServers().add(String.join(" ",user.getFirstName(),user.getLastName()));
             }
         });

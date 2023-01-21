@@ -19,7 +19,8 @@
            },
            {
                 field: "amount",
-                editable: false
+                editable: false,
+                type: 'rightAligned'
            },
            {
                 headerName: "Payment Method",
@@ -72,7 +73,8 @@
              },
              {
                   field: "amount",
-                  editable: false
+                  editable: false,
+                  type: 'rightAligned'
              }
            ],
            defaultColDef: {editable: false, sortable: true, filter: true},

@@ -2,9 +2,11 @@ package com.restaurant.dinehouse.service;
 
 import com.restaurant.dinehouse.model.Category;
 import com.restaurant.dinehouse.model.Item;
+import com.restaurant.dinehouse.model.Location;
 import com.restaurant.dinehouse.model.User;
 import com.restaurant.dinehouse.repository.CategoryRepository;
 import com.restaurant.dinehouse.repository.ItemRepository;
+import com.restaurant.dinehouse.repository.LocationRepository;
 import com.restaurant.dinehouse.repository.UserRepository;
 import com.restaurant.dinehouse.util.CipherUtil;
 import com.restaurant.dinehouse.util.SystemConstants;
@@ -33,6 +35,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final SystemConfig systemConfig;
+    private final LocationRepository locationRepository;
 
     @Override
     @Transactional
@@ -76,6 +79,22 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
             });
         } catch (IOException e) {
             log.error("failed to read content /items.csv from class-path resource {}", e.getMessage());
+        }
+
+        try {
+            List<String> records = systemConfig.readSourceAsStream("/locations.csv");
+            records.forEach(record -> {
+                log.info("locations record {}", record);
+                String[] tuple = record.split(",");
+                Location location = new Location();
+                location.setId(Integer.parseInt(tuple[0]));
+                location.setName(tuple[1]);
+                location.setType(tuple[2]);
+                location.setStatus(true);
+                locationRepository.save(location);
+            });
+        } catch (IOException e) {
+            log.error("failed to read content /locations.csv from class-path resource {}", e.getMessage());
         }
 
         systemConfig.getUserCredentials().stream().forEach(user1 -> {
