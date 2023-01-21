@@ -2,9 +2,7 @@ package com.restaurant.dinehouse.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.restaurant.dinehouse.exception.BadRequestException;
-import com.restaurant.dinehouse.model.Item;
-import com.restaurant.dinehouse.model.Location;
-import com.restaurant.dinehouse.model.Order;
+import com.restaurant.dinehouse.model.*;
 import com.restaurant.dinehouse.print.PrinterService;
 import com.restaurant.dinehouse.repository.LocationRepository;
 import com.restaurant.dinehouse.repository.OrderItemRepository;
@@ -163,6 +161,16 @@ public class OrderServiceImpl implements OrderService {
             orders.stream().forEach(order -> order.setOrderItems(orderItemRepository.findByOrderId(order.getId())));
         }
         return orders;
+    }
+
+    @Override
+    public List<DailyAggregateItems> getDailyReportOnItems() {
+        return orderItemRepository.findByGroupByItems();
+    }
+
+    @Override
+    public List<DailyAggregateOrders> getDailyReportOnOrders() {
+        return orderRepository.findByGroupByOrders();
     }
 
     private Order fetchOrderById(Long orderId){

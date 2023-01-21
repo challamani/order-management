@@ -28,6 +28,13 @@ public class User implements Serializable {
     @NotNull
     private boolean isAdmin;
 
+/*
+    @Column(name = "isServer", columnDefinition = "boolean default false")
+    @NotNull
+    private boolean isServer;
+
+ */
+
     @Column(name = "pwd")
     @NotNull
     private String pwd;
@@ -181,4 +188,12 @@ public class User implements Serializable {
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
+
+    /*public boolean isServer() {
+        return isServer;
+    }
+
+    public void setServer(boolean server) {
+        isServer = server;
+    }*/
 }

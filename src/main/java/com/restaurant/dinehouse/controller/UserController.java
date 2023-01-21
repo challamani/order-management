@@ -1,5 +1,7 @@
 package com.restaurant.dinehouse.controller;
 
+import com.restaurant.dinehouse.email.EmailDetails;
+import com.restaurant.dinehouse.email.EmailService;
 import com.restaurant.dinehouse.model.AuthRequest;
 import com.restaurant.dinehouse.model.AuthResponse;
 import com.restaurant.dinehouse.model.Response;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final EmailService emailService;
 
     @PostMapping("/user")
     public ResponseEntity<Response<User>> createUser( @RequestBody User user) {
@@ -36,5 +39,10 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<Response<List<User>>> getUsers() {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, userService.getUsers()));
+    }
+
+    @PostMapping("/send-email")
+    public ResponseEntity<Response<String>> sendEmail(@RequestBody EmailDetails emailDetails) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, emailService.sendSimpleMail(emailDetails)));
     }
 }

@@ -1,5 +1,7 @@
 package com.restaurant.dinehouse.service;
 
+import com.restaurant.dinehouse.model.DailyAggregateOrders;
+import com.restaurant.dinehouse.model.DailyAggregateTrans;
 import com.restaurant.dinehouse.model.Transaction;
 import com.restaurant.dinehouse.model.TransactionRequest;
 
@@ -12,4 +14,5 @@ public interface TranService {
     List<Transaction> getCurrentDateTransactions();
     List<Transaction> getDebitRecords();
     Long deleteTransactionById(Long id);
+    List<DailyAggregateTrans> getDailyReportOnTrans();
 }

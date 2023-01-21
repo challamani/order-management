@@ -1,6 +1,7 @@
 package com.restaurant.dinehouse.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.restaurant.dinehouse.model.DailyAggregateTrans;
 import com.restaurant.dinehouse.model.Order;
 import com.restaurant.dinehouse.model.Transaction;
 import com.restaurant.dinehouse.model.TransactionRequest;
@@ -111,5 +112,10 @@ public class TranServiceImpl implements TranService {
     public Long deleteTransactionById(Long id) {
         transactionRepository.deleteById(id);
         return id;
+    }
+
+    @Override
+    public List<DailyAggregateTrans> getDailyReportOnTrans() {
+        return transactionRepository.findByGroupByTransactions();
     }
 }

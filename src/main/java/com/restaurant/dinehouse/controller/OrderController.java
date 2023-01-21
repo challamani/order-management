@@ -53,6 +53,16 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getCurrentDateOrders(false));
     }
 
+    @GetMapping("/daily-report/items")
+    public ResponseEntity<List<DailyAggregateItems>> getDailyReportsOnItems() {
+        return ResponseEntity.ok(orderService.getDailyReportOnItems());
+    }
+
+    @GetMapping("/daily-report/orders")
+    public ResponseEntity<List<DailyAggregateOrders>> getDailyReportsOnOrders() {
+        return ResponseEntity.ok(orderService.getDailyReportOnOrders());
+    }
+
     @GetMapping("/bill/{orderId}")
     public ResponseEntity<Response<Boolean>> generateBill( @PathVariable(name = "orderId") Long orderId) {
 

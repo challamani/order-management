@@ -1,5 +1,7 @@
 package com.restaurant.dinehouse.service;
 
+import com.restaurant.dinehouse.model.DailyAggregateItems;
+import com.restaurant.dinehouse.model.DailyAggregateOrders;
 import com.restaurant.dinehouse.model.Location;
 import com.restaurant.dinehouse.model.Order;
 
@@ -22,4 +24,8 @@ public interface OrderService {
     Boolean generateBill(Long orderId);
 
     List<Order> getCurrentDateOrders(boolean includeItems);
+
+    List<DailyAggregateItems> getDailyReportOnItems();
+
+    List<DailyAggregateOrders> getDailyReportOnOrders();
 }

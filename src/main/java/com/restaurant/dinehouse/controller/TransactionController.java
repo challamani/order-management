@@ -1,8 +1,6 @@
 package com.restaurant.dinehouse.controller;
 
-import com.restaurant.dinehouse.model.Response;
-import com.restaurant.dinehouse.model.Transaction;
-import com.restaurant.dinehouse.model.TransactionRequest;
+import com.restaurant.dinehouse.model.*;
 import com.restaurant.dinehouse.service.TranService;
 import com.restaurant.dinehouse.util.SystemConstants;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +57,10 @@ public class TransactionController {
     @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<List<Transaction>> getDebitRecords() {
         return ResponseEntity.ok(tranService.getDebitRecords());
+    }
+
+    @GetMapping("/daily-report/trans")
+    public ResponseEntity<List<DailyAggregateTrans>> getDailyReportsOnTrans() {
+        return ResponseEntity.ok(tranService.getDailyReportOnTrans());
     }
 }
