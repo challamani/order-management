@@ -20,4 +20,10 @@ public interface OrderRepository extends CrudRepository<Order,Long> {
             "   where m.created_on >= CURDATE() and m.created_on < CURDATE() + INTERVAL 1 DAY " +
             "   group by m.user_id, m.served_by, m.status, m.type, t.payment_method", nativeQuery = true)
     List<DailyAggregateOrders> findByGroupByOrders();
+
+    @Query(value = "select sum(m.payable_amount) as amount, m.payment_method as paymentMethod, m.type as type  " +
+            "   from order_master m " +
+            "   where m.created_on >= CURDATE() and m.created_on < CURDATE() + INTERVAL 1 DAY " +
+            "   group by m.type, m.payment_method", nativeQuery = true)
+    List<DailyAggregateOrders> findOrdersByGroup();
 }

@@ -1,10 +1,7 @@
 package com.restaurant.dinehouse.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.restaurant.dinehouse.model.DailyAggregateTrans;
-import com.restaurant.dinehouse.model.Order;
-import com.restaurant.dinehouse.model.Transaction;
-import com.restaurant.dinehouse.model.TransactionRequest;
+import com.restaurant.dinehouse.model.*;
 import com.restaurant.dinehouse.repository.OrderRepository;
 import com.restaurant.dinehouse.repository.TransactionRepository;
 import com.restaurant.dinehouse.service.TranService;
@@ -29,6 +26,7 @@ public class TranServiceImpl implements TranService {
 
     private final OrderRepository orderRepository;
     private final TransactionRepository transactionRepository;
+
 
     @Override
     @Transactional
@@ -117,5 +115,44 @@ public class TranServiceImpl implements TranService {
     @Override
     public List<DailyAggregateTrans> getDailyReportOnTrans() {
         return transactionRepository.findByGroupByTransactions();
+    }
+
+    @Override
+    public List<BalanceSheetResponse> getBalanceSheet() {
+
+        List<DailyAggregateOrders> dailyAggregateOrders = orderRepository.findOrdersByGroup();
+        List<DailyAggregateTrans> dailyAggregateTrans = transactionRepository.findTransactionsByPaymentMethod();
+
+        List<BalanceSheetResponse> balanceSheetResponses = new ArrayList<>();
+
+        dailyAggregateOrders.stream().forEach(aggOrder -> {
+            BalanceSheetResponse balanceSheetResponse = new BalanceSheetResponse();
+            balanceSheetResponse.setActivity("Order Payment");
+            balanceSheetResponse.setExpected(aggOrder.getAmount().toString());
+            balanceSheetResponse.setPaymentMethod(aggOrder.getPaymentMethod());
+            balanceSheetResponse.setType(SystemConstants.TranType.Cr);
+
+            Optional<DailyAggregateTrans> optionalAggregateTrans = dailyAggregateTrans.stream().filter(aggTran ->
+                    aggTran.getPaymentMethod() == aggOrder.getPaymentMethod() &&
+                            aggTran.getType() == SystemConstants.TranType.Cr).findFirst();
+
+            if (optionalAggregateTrans.isPresent()) {
+                balanceSheetResponse.setActual(optionalAggregateTrans.get().getAmount().toString());
+            } else {
+                balanceSheetResponse.setActual("NA");
+            }
+            balanceSheetResponses.add(balanceSheetResponse);
+        });
+
+        dailyAggregateTrans.stream().filter(aggTran -> aggTran.getType() == SystemConstants.TranType.Dr)
+                .forEach(aggTrans -> {
+                    BalanceSheetResponse balanceSheetResponse = new BalanceSheetResponse();
+                    balanceSheetResponse.setActivity("Expenses");
+                    balanceSheetResponse.setExpected("NA");
+                    balanceSheetResponse.setPaymentMethod(aggTrans.getPaymentMethod());
+                    balanceSheetResponse.setType(SystemConstants.TranType.Dr);
+                    balanceSheetResponse.setActual(aggTrans.getAmount().toString());
+                });
+        return balanceSheetResponses;
     }
 }

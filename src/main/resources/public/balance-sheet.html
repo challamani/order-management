@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Balance Sheet</title>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.0.0/dist/ag-grid-community.min.js"></script>
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(function(){
+            $("#header").load("header.html");
+            $("#footer").load("footer.html");
+        });
+    </script>
+</head>
+<body>
+
+<div id="header"></div>
+<br/><br/><br/><br/>
+
+<div align="center"><span>Balance Sheet</span></div>
+<div id="balanceSheetView" style="height: 900px;" class="ag-theme-alpine"></div>
+<script src="balance-sheet.js"> </script>
+
+<div id="footer"></div>
+</body>
+</html>

@@ -63,4 +63,9 @@ public class TransactionController {
     public ResponseEntity<List<DailyAggregateTrans>> getDailyReportsOnTrans() {
         return ResponseEntity.ok(tranService.getDailyReportOnTrans());
     }
+
+    @GetMapping("/web-ui/balance-sheet")
+    public ResponseEntity<List<BalanceSheetResponse>> getBalanceSheet() {
+        return ResponseEntity.ok(tranService.getBalanceSheet());
+    }
 }

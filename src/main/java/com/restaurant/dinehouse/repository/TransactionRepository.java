@@ -27,4 +27,10 @@ public interface TransactionRepository extends CrudRepository<Transaction,Long> 
             "   where t.created_on >= CURDATE() and t.created_on < CURDATE() + INTERVAL 1 DAY " +
             "   group by t.user_id, t.payment_method, t.type, t.tran_group ", nativeQuery = true)
     List<DailyAggregateTrans> findByGroupByTransactions();
+
+    @Query(value = "select sum(t.amount) as amount, t.payment_method as paymentMethod, t.type as type " +
+            "   from transactions t " +
+            "   where t.created_on >= CURDATE() and t.created_on < CURDATE() + INTERVAL 1 DAY " +
+            "   group by t.payment_method, t.type ", nativeQuery = true)
+    List<DailyAggregateTrans> findTransactionsByPaymentMethod();
 }
