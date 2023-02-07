@@ -37,6 +37,12 @@ public class OrderController {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrderById(orderId)));
     }
 
+    @DeleteMapping("/order/{orderId}")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public ResponseEntity<Response<Order>> deleteOrder(@PathVariable(name = "orderId") Long orderId) {
+        return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.deleteOrderById(orderId)));
+    }
+
     @GetMapping("/orders/{userId}")
     public ResponseEntity<Response<List<Order>>> getOrdersByUser( @PathVariable(name = "userId") String userId) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, orderService.getOrdersByUser(userId)));
@@ -49,8 +55,8 @@ public class OrderController {
 
     @GetMapping("/web-ui/orders")
     @CrossOrigin(origins = "http://localhost:8080")
-    public ResponseEntity<List<Order>> getTodayOrders() {
-        return ResponseEntity.ok(orderService.getCurrentDateOrders(false));
+    public ResponseEntity<List<OrderInfo>> getTodayOrders() {
+        return ResponseEntity.ok(orderService.getCurrentDateOrderInfo());
     }
 
     @GetMapping("/daily-report/items")

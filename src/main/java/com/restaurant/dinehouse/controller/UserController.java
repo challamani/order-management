@@ -42,6 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/send-email")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<Response<String>> sendEmail(@RequestBody EmailDetails emailDetails) {
         return ResponseEntity.ok(new Response<>(SystemConstants.SUCCESS, emailService.sendSimpleMail(emailDetails)));
     }

@@ -1,9 +1,6 @@
 package com.restaurant.dinehouse.service;
 
-import com.restaurant.dinehouse.model.DailyAggregateItems;
-import com.restaurant.dinehouse.model.DailyAggregateOrders;
-import com.restaurant.dinehouse.model.Location;
-import com.restaurant.dinehouse.model.Order;
+import com.restaurant.dinehouse.model.*;
 
 import java.util.List;
 
@@ -21,9 +18,13 @@ public interface OrderService {
 
     Order getOrderById(Long orderId);
 
+    Order deleteOrderById(Long orderId);
+
     Boolean generateBill(Long orderId);
 
     List<Order> getCurrentDateOrders(boolean includeItems);
+
+    List<OrderInfo> getCurrentDateOrderInfo();
 
     List<DailyAggregateItems> getDailyReportOnItems();
 

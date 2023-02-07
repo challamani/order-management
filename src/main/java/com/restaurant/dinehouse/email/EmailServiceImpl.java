@@ -62,7 +62,7 @@ public class EmailServiceImpl implements EmailService {
         messageBuilder.append(getSalesReport());
         messageBuilder.append(getStaffPerformanceReport());
         messageBuilder.append(getTransactionsReport());
-        messageBuilder.append(" <br/> <span>************This is System Generated Message!</span></html>");
+        messageBuilder.append(" <br/> <span>************This is System Generated Message************!</span></html>");
         log.info("message body {}", messageBuilder);
         emailDetails.setMsgBody(messageBuilder.toString());
     }

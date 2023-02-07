@@ -137,13 +137,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order deleteOrderById(Long orderId) {
+        Order order = fetchOrderById(orderId);
+        if (Objects.nonNull(order) && order.getStatus() != SystemConstants.OrderStatus.PAID) {
+            orderRepository.deleteById(orderId);
+            orderItemRepository.deleteByOrderId(orderId);
+        }
+        return order;
+    }
+
+    @Override
     public Boolean generateBill(Long orderId) {
         log.info("Generate bill for order {}",orderId);
         boolean isBillGenerated = printerService.print(orderId, false);
-        if(isBillGenerated) {
-            log.info("generate duplicate bill for order {}", orderId);
-            printerService.print(orderId, true);
-        }
         if (isBillGenerated) {
             Order dbOrder = orderRepository.findById(orderId).get();
             if(SystemConstants.OrderStatus.PAID != dbOrder.getStatus()) {
@@ -161,6 +167,11 @@ public class OrderServiceImpl implements OrderService {
             orders.stream().forEach(order -> order.setOrderItems(orderItemRepository.findByOrderId(order.getId())));
         }
         return orders;
+    }
+
+    @Override
+    public List<OrderInfo> getCurrentDateOrderInfo() {
+        return orderRepository.findCurrentDateOrderInfo();
     }
 
     @Override

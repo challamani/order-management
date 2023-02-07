@@ -13,6 +13,6 @@ public interface OrderItemRepository extends CrudRepository<OrderItem,Long> {
     @Query(value = "select item_name as name, sum(item.quantity) as quantity,sum(item.price) as amount, m.type as type, m.status as status  " +
             "   from order_item as item join order_master m on m.id=item.order_id " +
             "   where item.created_on >= CURDATE() and item.created_on < CURDATE() + INTERVAL 1 DAY " +
-            "   group by item.item_name, m.status, m.type", nativeQuery = true)
+            "   group by item.item_name, m.status, m.type order by item.item_name", nativeQuery = true)
     List<DailyAggregateItems> findByGroupByItems();
 }

@@ -1,5 +1,5 @@
-
- const gridOptions = {
+(function(){
+    const gridOptions = {
       suppressClickEdit: true,
       suppressHorizontalScroll: true,
       columnDefs: [
@@ -18,11 +18,6 @@
                editable: false
            },
            {
-                field: "amount",
-                editable: false,
-                type: 'rightAligned'
-           },
-           {
                 headerName: "Payment Method",
                 field: "paymentMethod",
                 editable: false
@@ -30,6 +25,11 @@
            {
                 field: "status",
                 editable: false
+           },
+           {
+                field: "amount",
+                editable: false,
+                type: 'rightAligned'
            }
          ],
          defaultColDef: {editable: false, sortable: true, filter: true},
@@ -37,17 +37,17 @@
          animateRows: true
        };
 
-  const eGridDiv = document.getElementById("ordersGroupView");
-  new agGrid.Grid(eGridDiv, gridOptions);
-
+   const eTranGridDiv = document.getElementById("ordersGroupView");
+   new agGrid.Grid(eTranGridDiv, gridOptions);
    fetch("http://localhost:8080/dinehouse/api/v1/daily-report/orders")
-  .then(response => response.json())
-  .then(data => {
-     gridOptions.api.sizeColumnsToFit();
-     gridOptions.api.setRowData(data);
-  });
+   .then(response => response.json())
+   .then(data => {
+         gridOptions.api.setRowData(data);
+   });
 
-  const tranGridOptions = {
+})()
+
+ const tranGridOptions = {
         suppressClickEdit: true,
         suppressHorizontalScroll: true,
         columnDefs: [
@@ -82,12 +82,11 @@
            animateRows: true
          };
 
-    const eTranGridDiv = document.getElementById("tranGroupView");
-    new agGrid.Grid(eTranGridDiv, tranGridOptions);
+   const eTranGridDiv = document.getElementById("tranGroupView");
+   new agGrid.Grid(eTranGridDiv, tranGridOptions);
 
-     fetch("http://localhost:8080/dinehouse/api/v1/daily-report/trans")
-    .then(response => response.json())
-    .then(data => {
-       tranGridOptions.api.sizeColumnsToFit();
-       tranGridOptions.api.setRowData(data);
-    });
+   fetch("http://localhost:8080/dinehouse/api/v1/daily-report/trans")
+   .then(response => response.json())
+   .then(data => {
+        tranGridOptions.api.setRowData(data);
+   });

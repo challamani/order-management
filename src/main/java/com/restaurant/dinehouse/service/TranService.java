@@ -12,6 +12,5 @@ public interface TranService {
     List<Transaction> getDebitRecords();
     Long deleteTransactionById(Long id);
     List<DailyAggregateTrans> getDailyReportOnTrans();
-
     List<BalanceSheetResponse> getBalanceSheet();
 }

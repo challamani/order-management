@@ -89,26 +89,20 @@
                editable: false
            },
            {
-                headerName: "price",
-                field: "payableAmount",
-                editable: true,
-                type: 'rightAligned'
+               field: "status",
+               editable: true,
+               cellEditor:'agSelectCellEditor',
+               cellEditorParams: {
+                 values: ['OPEN', 'CANCELLED', 'PENDING', 'DECLINED', 'PREPARING', 'DELIVERED', 'BILL_GENERATED','PAID']
+               }
            },
            {
-                headerName: "Payment Options",
+                headerName: "Payment",
                 field: "paymentMethod",
                 editable: true,
                 cellEditor:'agSelectCellEditor',
                 cellEditorParams: {
-                   values: ['PhonePe', 'ZomatoPay', 'Cash', 'Card', 'Paytm', 'Pending']
-                }
-           },
-           {
-                field: "status",
-                editable: true,
-                cellEditor:'agSelectCellEditor',
-                cellEditorParams: {
-                      values: ['OPEN', 'CANCELLED', 'PENDING', 'DECLINED', 'PREPARING', 'DELIVERED', 'BILL_GENERATED','PAID']
+                  values: ['PhonePe', 'ZomatoPay', 'Cash', 'Card', 'Paytm', 'Pending']
                 }
            },
            {
@@ -117,8 +111,10 @@
                 cellEditor: 'agTextCellEditor'
            },
            {
-                field: "createdOn",
-                editable: false
+                headerName: "Price",
+                field: "payableAmount",
+                editable: true,
+                type: 'rightAligned'
            },
            {
                headerName: "action",
@@ -196,3 +192,20 @@
     }
     return "";
   }
+
+  function onRemoveSelected() {
+    const selectedData = gridOptions.api.getSelectedRows();
+    let text = "are you sure to cancel the order# "+ selectedData[0].id +"? !\nEither OK or Cancel.";
+    if (confirm(text) == true) {
+        fetch('http://localhost:8080/dinehouse/api/v1/order/'+selectedData[0].id, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+        })
+        .then(response => response.json())
+        .then(response => console.log(JSON.stringify(response)))
+        .then(response => location.replace("http://localhost:8080/dinehouse/api/v1/orders.html"))
+    }
+ }

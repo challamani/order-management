@@ -152,6 +152,7 @@ public class TranServiceImpl implements TranService {
                     balanceSheetResponse.setPaymentMethod(aggTrans.getPaymentMethod());
                     balanceSheetResponse.setType(SystemConstants.TranType.Dr);
                     balanceSheetResponse.setActual(aggTrans.getAmount().toString());
+                    balanceSheetResponses.add(balanceSheetResponse);
                 });
         return balanceSheetResponses;
     }
